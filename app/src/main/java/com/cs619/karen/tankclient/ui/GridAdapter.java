@@ -1,12 +1,13 @@
 package com.cs619.karen.tankclient.ui;
 
-import android.graphics.Color;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cs619.karen.tankclient.R;
 
@@ -15,6 +16,7 @@ import org.androidannotations.annotations.SystemService;
 
 @EBean
 public class GridAdapter extends BaseAdapter {
+  public static final String TAG = GridAdapter.class.getSimpleName();
 
   private final Object monitor = new Object();
   @SystemService
@@ -51,12 +53,12 @@ public class GridAdapter extends BaseAdapter {
   @Override
   public View getView(int position, View view, ViewGroup parent) {
 
-    ImageView imageView = (ImageView) view;
+    if (view == null) {
+      view = inflater.inflate(R.layout.field_item, null);
+      int iconDimen = parent.getContext().getResources().getDisplayMetrics().widthPixels / 16;
+      view.setLayoutParams(new GridView.LayoutParams(iconDimen, iconDimen));
+      ((ImageView) view).setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-    if (imageView == null) {
-      imageView = (ImageView) inflater.inflate(R.layout.field_item, null);
-      imageView.setLayoutParams(new GridView.LayoutParams(60, 60));
-      imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
 
     int row = position / 16;
@@ -64,6 +66,25 @@ public class GridAdapter extends BaseAdapter {
 
     int val = mEntities[row][col];
 
+    boolean christLives = false;
+    for (int[] i : mEntities) {
+      for (int j : i) {
+        if (tankId == (j / 10000) - (j / 10000000) * 1000) {
+          christLives = true;
+        }
+      }
+    }
+
+    if (!christLives) {
+      Toast.makeText(view.getContext(), "YOU DED", Toast.LENGTH_LONG).show();
+      Handler handler = new Handler();
+      handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          System.exit(0);
+        }
+      }, 3000);
+    }
 
 //    If the value is 1TIDLIFX, then the ID of the tank is TID, it has LIF life and its direction is X.
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
@@ -72,21 +93,22 @@ public class GridAdapter extends BaseAdapter {
     synchronized (monitor) {
       if (val > 0) {
         if (val == 1000) {
-          imageView.setBackgroundColor(Color.RED);
-          ((ImageView) imageView).setImageResource(R.mipmap.wall);
+          ((ImageView) view).setImageResource(R.drawable.wall);
 
-//                setBackground(ContextCompat.getDrawable(imageView.getContext(), R.mipmap.wall));
         } else if (val >= 2000000 && val <= 3000000) {
-          imageView.setBackgroundColor(Color.YELLOW);
-          ((ImageView) imageView).setImageResource(R.mipmap.bullet);
+          ((ImageView) view).setImageResource(R.mipmap.bullet);
+
         } else if (val >= 10000000 && val <= 20000000) {
+          int tankId, direction, up, right, down, left, life;
 
-          int tankId, direction, up, right, down, left;
+          direction = val % 10;
 
-          direction = val - (val / 10) * 10;
-          tankId = (val/10000) - (val/10000000)*1000;
+          life = (val % 1000) / 10;
 
-          if (this.tankId == tankId ) {
+          tankId = (val / 10000) - (val / 10000000) * 1000;
+
+
+          if (this.tankId == tankId) {
             up = R.drawable.tank_up_blue;
             right = R.drawable.tank_right_blue;
             down = R.drawable.tank_down_blue;
@@ -99,27 +121,23 @@ public class GridAdapter extends BaseAdapter {
           }
 
           if (direction == 0) {
-            imageView.setImageResource(up);
+            ((ImageView) view).setImageResource(up);
           } else if (direction == 2) {
-            imageView.setImageResource(right);
+            ((ImageView) view).setImageResource(right);
           } else if (direction == 4) {
-            imageView.setImageResource(down);
+            ((ImageView) view).setImageResource(down);
           } else if (direction == 6) {
-            imageView.setImageResource(left);
+            ((ImageView) view).setImageResource(left);
           }
 
-          imageView.setBackgroundColor(Color.GREEN);
-//          ((ImageView) imageView).setImageResource(R.mipmap.tank);
         }
       } else {
-//        imageView.setBackgroundColor(Color.BLUE);
-        imageView.setBackgroundColor(Color.TRANSPARENT);
-        ((ImageView) imageView).setImageDrawable(null);
+        ((ImageView) view).setImageDrawable(null);
       }
 
     }
 
-    return imageView;
+    return view;
   }
 }
 

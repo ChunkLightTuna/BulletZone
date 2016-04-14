@@ -1,17 +1,18 @@
 package com.cs619.karen.tankclient;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.GridView;
 
+import com.cs619.karen.tankclient.controller.Gamepad;
 import com.cs619.karen.tankclient.rest.BulletZoneRestClient;
 import com.cs619.karen.tankclient.rest.PollerTask;
 import com.cs619.karen.tankclient.ui.GridAdapter;
+import com.cs619.karen.tankclient.util.BooleanWrapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -24,6 +25,7 @@ import org.androidannotations.annotations.rest.RestService;
 public class TankClientActivity extends AppCompatActivity {
 
   private static final String TAG = "TankClientActivity";
+  Gamepad gamepad;
 
 
   @Bean
@@ -39,33 +41,23 @@ public class TankClientActivity extends AppCompatActivity {
   @Bean
   PollerTask gridPollTask;
 
+  private BooleanWrapper bw;
+  private Tank t;
   private long tankId = -1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    StrictMode.setThreadPolicy(policy);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-  }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_main, menu);
-    return true;
-  }
+    gamepad = new Gamepad(tankId, restClient, this);
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
 
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
-    }
-    return super.onOptionsItemSelected(item);
+    bw = new BooleanWrapper();
+    t = new Tank(tankId);
+    Log.wtf(TAG, "t created with " + tankId);
   }
 
   @AfterViews
@@ -75,12 +67,6 @@ public class TankClientActivity extends AppCompatActivity {
     joinAsync();
     SystemClock.sleep(500);
 
-
-    ViewGroup.LayoutParams layoutParams = gridView.getLayoutParams();
-
-    layoutParams.height = layoutParams.width;
-    gridView.setLayoutParams(layoutParams);
-
     gridView.setAdapter(mGridAdapter);
   }
 
@@ -89,10 +75,34 @@ public class TankClientActivity extends AppCompatActivity {
     try {
       tankId = restClient.join().getResult();
 
+      t.setId(tankId);
       Log.d(TAG, "tankId is " + tankId);
       gridPollTask.doPoll(); // start polling the server
     } catch (Exception e) {
 
     }
+  }
+
+  public void moveForward(View v) {
+    gamepad.move( t.getId(), t.getDir() );
+  }
+
+  public void moveBk(View v) {
+    gamepad.move( t.getId(), t.getRevDir() );
+
+  }
+
+  public void turnL(View v) {
+    gamepad.turn( t.getId(), t.getLeftDir() );
+    t.setDir(t.getLeftDir());
+  }
+
+  public void turnR(View v) {;
+    gamepad.turn( t.getId(), t.getRightDir() );
+    t.setDir(t.getRightDir());
+  }
+
+  public void fire(View v) {
+    gamepad.fire( t.getId() );
   }
 }

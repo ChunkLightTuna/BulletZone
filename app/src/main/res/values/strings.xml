@@ -4,10 +4,10 @@
 
     <string name="grid">grid</string>
 
-    <string name="up">UP</string>
-    <string name="down">DOWN</string>
-    <string name="right">RIGHT</string>
-    <string name="left">LEFT</string>
+    <string name="up">FORWARD</string>
+    <string name="down">REVERSE</string>
+    <string name="right">TURN RIGHT</string>
+    <string name="left">TURN LEFT</string>
     <string name="fire">FIRE</string>
     <string name="join">JOIN</string>
     <string name="leave">LEAVE</string>

@@ -15,35 +15,52 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
 
+/**
+ * Continually makes requests to server for status updates. Supplies full state, not just diffs!
+ */
 @EBean
 public class PollerTask {
-    private static final String TAG = "GridPollerTask";
+  private static final String TAG = "GridPollerTask";
 
 
-    private GridAdapter adapter;
+  private GridAdapter adapter;
 
-    @RestService
-    BulletZoneRestClient restClient;
+  @RestService
+  BulletZoneRestClient restClient;
 
-    @Background(id = "grid_poller_task")
-    public void doPoll() {
-        while (true) {
-            onGridUpdate(restClient.grid());
-            // poll server every 100ms
-            SystemClock.sleep(100);
-        }
+
+  /**
+   * poll server.
+   */
+  @Background(id = "grid_poller_task")
+  public void doPoll() {
+    while (true) {
+      onGridUpdate(restClient.grid());
+      // poll server every 100ms
+      SystemClock.sleep(100);
     }
+  }
 
-    public void setAdapter(GridAdapter adapter) {
-        this.adapter = adapter;
-    }
+  /**
+   * attach adapter to grid for UI hookin.
+   *
+   * @param adapter GridAdapter
+   */
+  public void setAdapter(GridAdapter adapter) {
+    this.adapter = adapter;
+  }
 
-    @UiThread
-    public void onGridUpdate(GridWrapper gw) {
-        Log.d(TAG, "grid at timestamp: " + gw.getTimeStamp());
+  /**
+   * Stay on UI thread as to avoid blocks.
+   *
+   * @param gw Gridwrapper
+   */
+  @UiThread
+  public void onGridUpdate(GridWrapper gw) {
+    Log.d(TAG, "grid at timestamp: " + gw.getTimeStamp());
 
-        adapter.updateList(gw.getGrid());
+    adapter.updateList(gw.getGrid());
 
-        //busProvider.getEventBus().post(new GridUpdateEvent(gw));
-    }
+    //busProvider.getEventBus().post(new GridUpdateEvent(gw));
+  }
 }

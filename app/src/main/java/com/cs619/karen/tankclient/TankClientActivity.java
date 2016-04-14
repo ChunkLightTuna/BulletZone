@@ -21,6 +21,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
 
+/**
+ * Not a God Object we promise. Delegates tasks and provides the bulk of initialization.
+ */
 @EActivity(R.layout.activity_main)
 public class TankClientActivity extends AppCompatActivity {
 
@@ -45,6 +48,11 @@ public class TankClientActivity extends AppCompatActivity {
   private Tank t;
   private long tankId = -1;
 
+  /**
+   * Google android lifecycle yo.
+   *
+   * @param savedInstanceState Bundle
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -60,6 +68,9 @@ public class TankClientActivity extends AppCompatActivity {
     Log.wtf(TAG, "t created with " + tankId);
   }
 
+  /**
+   * facilitates Android Annotations hand waving
+   */
   @AfterViews
   protected void afterViewInjection() {
     mGridAdapter.setTankId(tankId);
@@ -70,6 +81,9 @@ public class TankClientActivity extends AppCompatActivity {
     gridView.setAdapter(mGridAdapter);
   }
 
+  /**
+   * handles non-UI tasks ie poller
+   */
   @Background
   void joinAsync() {
     try {
@@ -83,26 +97,56 @@ public class TankClientActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * provides hook for gamepad move forward.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   *
+   * @param v View
+   */
   public void moveForward(View v) {
-    gamepad.move( t.getId(), t.getDir() );
+    gamepad.move(t.getId(), t.getDir());
   }
 
+  /**
+   * provides hook for gamepad move back.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   *
+   * @param v View
+   */
   public void moveBk(View v) {
-    gamepad.move( t.getId(), t.getRevDir() );
+    gamepad.move(t.getId(), t.getRevDir());
 
   }
 
+  /**
+   * provides hook for gamepad move left.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   *
+   * @param v View
+   */
   public void turnL(View v) {
-    gamepad.turn( t.getId(), t.getLeftDir() );
+    gamepad.turn(t.getId(), t.getLeftDir());
     t.setDir(t.getLeftDir());
   }
 
-  public void turnR(View v) {;
-    gamepad.turn( t.getId(), t.getRightDir() );
+  /**
+   * provides hook for gamepad turn right.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   *
+   * @param v View
+   */
+  public void turnR(View v) {
+    gamepad.turn(t.getId(), t.getRightDir());
     t.setDir(t.getRightDir());
   }
 
+  /**
+   * provides hook for gamepad fire.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   *
+   * @param v View
+   */
   public void fire(View v) {
-    gamepad.fire( t.getId() );
+    gamepad.fire(t.getId());
   }
 }

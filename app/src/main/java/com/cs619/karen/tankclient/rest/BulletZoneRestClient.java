@@ -19,26 +19,67 @@ import org.springframework.web.client.RestClientException;
  */
 
 @Rest(rootUrl = "http://stman1.cs.unh.edu:6191/games",
-        converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
+    converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
 )
+/**
+ * Rest client for retrieving from shitty central server. Beware of exceptions!
+ */
 public interface BulletZoneRestClient extends RestClientErrorHandling {
-    void setRootUrl(String rootUrl);
+  void setRootUrl(String rootUrl);
 
-    @Post("")
-    LongWrapper join() throws RestClientException;
+  /**
+   * Join Server.
+   *
+   * @return LongWrapper
+   * @throws RestClientException
+   */
+  @Post("")
+  LongWrapper join() throws RestClientException;
 
-    @Get("")
-    GridWrapper grid();
 
-    @Put("/{tankId}/move/{direction}")
-    BooleanWrapper move(long tankId, byte direction);
+  /**
+   * Get game state.
+   *
+   * @return GridWrapper
+   */
+  @Get("")
+  GridWrapper grid();
 
-    @Put("/{tankId}/turn/{direction}")
-    BooleanWrapper turn(long tankId, byte direction);
+  /**
+   * Update tank position
+   *
+   * @param tankId    long
+   * @param direction byte
+   * @return BooleanWrapper
+   */
+  @Put("/{tankId}/move/{direction}")
+  BooleanWrapper move(long tankId, byte direction);
 
-    @Put("/{tankId}/fire")
-    BooleanWrapper fire(long tankId);
+  /**
+   * turn tank (l/r).
+   *
+   * @param tankId    long
+   * @param direction byte
+   * @return BooleanWrapper
+   */
+  @Put("/{tankId}/turn/{direction}")
+  BooleanWrapper turn(long tankId, byte direction);
 
-    @Delete("/{tankId}/leave")
-    BooleanWrapper leave(long tankId);
+  /**
+   * Pew pew pew.
+   *
+   * @param tankId long
+   * @return BooleanWrapper
+   */
+  @Put("/{tankId}/fire")
+  BooleanWrapper fire(long tankId);
+
+  /**
+   * Quit game. reported as buggy. beware!
+   *
+   * @param tankId long
+   * @return BooleanWrapper
+   */
+  @Delete("/{tankId}/leave")
+  BooleanWrapper leave(long tankId);
 }

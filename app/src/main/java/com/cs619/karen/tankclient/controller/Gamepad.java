@@ -1,52 +1,51 @@
 package com.cs619.karen.tankclient.controller;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-import com.cs619.karen.tankclient.R;
 import com.cs619.karen.tankclient.Tank;
 import com.cs619.karen.tankclient.rest.BulletZoneRestClient;
-import com.cs619.karen.tankclient.util.BooleanWrapper;
 
 /**
  * Created by Chris Oelerich on 4/13/16.
  */
-public class Gamepad implements SensorEventListener, View.OnClickListener {
+public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
+
   private static final String TAG = Gamepad.class.getSimpleName();
   private static final int SHAKE_THRESHOLD = 1200;
 
-  float[] v = new float[3];
-  float[] vOld = new float[3];
-  long lastUpdate;
-  Context context;
-
-  BooleanWrapper bw;
-  Tank t;
-
-  @Override
-  public void onClick(View v) {
-    if (v.getId() == R.id.buttonFire) {
-
-    } else if (v.getId() == R.id.buttonBackward) {
-
-    } else if (v.getId() == R.id.buttonForward) {
-
-    } else if (v.getId() == R.id.buttonLeft) {
-
-    } else if (v.getId() == R.id.buttonRight) {
-
-    }
-  }
+  private float[] v = new float[3];
+  private float[] vOld = new float[3];
+  private long lastUpdate;
+  //  private Context context;
+//
+//  private BooleanWrapper bw;
+  private Tank t;
 
   private BulletZoneRestClient restClient;
+
+//  /**
+//   * Unused as yet
+//   * @param v View
+//   */
+//  @Override
+//  public void onClick(View v) {
+//    if (v.getId() == R.id.buttonFire) {
+//
+//    } else if (v.getId() == R.id.buttonBackward) {
+//
+//    } else if (v.getId() == R.id.buttonForward) {
+//
+//    } else if (v.getId() == R.id.buttonLeft) {
+//
+//    } else if (v.getId() == R.id.buttonRight) {
+//
+//    }
+//  }
 
   public Gamepad(long tankId, BulletZoneRestClient restClient, Context context) {
 
@@ -59,18 +58,17 @@ public class Gamepad implements SensorEventListener, View.OnClickListener {
     this.restClient = restClient;
     t = new Tank(tankId);
 
-    this.context = context;
-
-    final Button fireButton = (Button) ((Activity) context).findViewById(R.id.buttonFire);
-    Log.wtf(TAG, "onClick()");
-
-    if (fireButton == null) {
-      Log.w(TAG, "onCLick() Gamepad: rip");
-    }
-
-
-    fireButton.setBackgroundColor(Color.BLUE);
-    fireButton.setOnClickListener(this);
+//    this.context = context;
+//
+//    final Button fireButton = (Button) ((Activity) context).findViewById(R.id.buttonFire);
+//    Log.wtf(TAG, "onClick()");
+//
+//    if (fireButton == null) {
+//      Log.w(TAG, "onCLick() Gamepad: rip");
+//    }
+//
+//    fireButton.setBackgroundColor(Color.BLUE);
+//    fireButton.setOnClickListener(this);
 
 //    bw = restClientFinal.move(t.getId(), (byte) t.getDir());
 //    bw = restClientFinal.turn(t.getId(), (byte) t.getRightDir());
@@ -79,10 +77,22 @@ public class Gamepad implements SensorEventListener, View.OnClickListener {
 //    bw = restClientFinal.fire(t.getId());
   }
 
+  /**
+   * Boilerplate for SensorEventListener
+   *
+   * @param sensor   Sensor
+   * @param accuracy int
+   */
   @Override
   public final void onAccuracyChanged(Sensor sensor, int accuracy) {
   }
 
+  /**
+   * Boilerplate for SensorEventListener
+   * logic for what to do whne things go ashaken lie here.
+   *
+   * @param event SensorEvent
+   */
   @Override
   public final void onSensorChanged(SensorEvent event) {
 
@@ -108,6 +118,11 @@ public class Gamepad implements SensorEventListener, View.OnClickListener {
     }
   }
 
+  /**
+   * fire all phasers.
+   *
+   * @param id long
+   */
   public void fire(long id) {
     try {
       restClient.fire(id);
@@ -116,6 +131,12 @@ public class Gamepad implements SensorEventListener, View.OnClickListener {
     }
   }
 
+  /**
+   * move tank.
+   *
+   * @param id  long
+   * @param dir int
+   */
   public void move(long id, int dir) {
     try {
       restClient.move(id, (byte) dir);
@@ -124,6 +145,12 @@ public class Gamepad implements SensorEventListener, View.OnClickListener {
     }
   }
 
+  /**
+   * turn tank.
+   *
+   * @param id  long
+   * @param dir int
+   */
   public void turn(long id, int dir) {
     try {
       restClient.turn(id, (byte) dir);

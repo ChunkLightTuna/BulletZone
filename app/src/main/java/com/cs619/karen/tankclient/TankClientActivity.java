@@ -3,10 +3,12 @@ package com.cs619.karen.tankclient;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import com.cs619.karen.tankclient.controller.Gamepad;
 import com.cs619.karen.tankclient.rest.BulletZoneRestClient;
@@ -30,6 +32,9 @@ public class TankClientActivity extends AppCompatActivity {
   private static final String TAG = "TankClientActivity";
   Gamepad gamepad;
 
+  String[] drawerItems;
+  DrawerLayout drawerLayout;
+  ListView drawerList;
 
   @Bean
   protected GridAdapter mGridAdapter;
@@ -66,6 +71,13 @@ public class TankClientActivity extends AppCompatActivity {
     bw = new BooleanWrapper();
     t = new Tank(tankId);
     Log.wtf(TAG, "t created with " + tankId);
+
+
+
+    drawerItems = getResources().getStringArray(R.array.nav_drawer_items);
+    drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawerList = (ListView) findViewById(R.id.drawer_list);
+
   }
 
   /**
@@ -115,7 +127,6 @@ public class TankClientActivity extends AppCompatActivity {
    */
   public void moveBk(View v) {
     gamepad.move(t.getId(), t.getRevDir());
-
   }
 
   /**

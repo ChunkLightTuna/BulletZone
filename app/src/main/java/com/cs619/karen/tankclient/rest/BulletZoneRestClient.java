@@ -18,7 +18,7 @@ import org.springframework.web.client.RestClientException;
  * Created by karenjin on 10/21/15.
  */
 
-@Rest(rootUrl = "http://stman1.cs.unh.edu:6191/games",
+@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
     converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
 )
 /**
@@ -72,7 +72,7 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
    * @return BooleanWrapper
    */
   @Put("/{tankId}/fire")
-  BooleanWrapper fire(long tankId);
+  BooleanWrapper fire(long tankId, int type);
 
   /**
    * Quit game. reported as buggy. beware!

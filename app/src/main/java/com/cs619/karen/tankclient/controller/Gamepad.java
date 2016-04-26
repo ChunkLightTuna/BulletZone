@@ -125,7 +125,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
    */
   public void fire(long id) {
     try {
-      restClient.fire(id);
+      restClient.fire(id, 1);
     } catch (Exception e) {
       Log.e(TAG, "fire: ", e);
     }

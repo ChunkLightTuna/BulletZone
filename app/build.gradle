@@ -25,7 +25,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
-        applicationId 'com.cs619.karen.tankclient'
+        applicationId 'com.cs619.alpha.tankclient'
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1

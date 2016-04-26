@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient;
+package com.cs619.alpha.tankclient;
 
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.cs619.karen.tankclient.controller.Gamepad;
-import com.cs619.karen.tankclient.rest.BulletZoneRestClient;
-import com.cs619.karen.tankclient.rest.PollerTask;
-import com.cs619.karen.tankclient.ui.GridAdapter;
-import com.cs619.karen.tankclient.util.BooleanWrapper;
+import com.cs619.alpha.tankclient.controller.Gamepad;
+import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
+import com.cs619.alpha.tankclient.rest.PollerTask;
+import com.cs619.alpha.tankclient.ui.GridAdapter;
+import com.cs619.alpha.tankclient.util.BooleanWrapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;

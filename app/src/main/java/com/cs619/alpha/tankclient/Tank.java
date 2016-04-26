@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient;
+package com.cs619.alpha.tankclient;
 
 /**
  * Created by Glenn.

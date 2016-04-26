@@ -1,8 +1,8 @@
-package com.cs619.karen.tankclient.rest;
+package com.cs619.alpha.tankclient.rest;
 
-import com.cs619.karen.tankclient.util.BooleanWrapper;
-import com.cs619.karen.tankclient.util.GridWrapper;
-import com.cs619.karen.tankclient.util.LongWrapper;
+import com.cs619.alpha.tankclient.util.BooleanWrapper;
+import com.cs619.alpha.tankclient.util.GridWrapper;
+import com.cs619.alpha.tankclient.util.LongWrapper;
 
 import org.androidannotations.annotations.rest.Delete;
 import org.androidannotations.annotations.rest.Get;

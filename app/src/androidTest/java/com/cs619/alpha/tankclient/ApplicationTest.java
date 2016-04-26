@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient;
+package com.cs619.alpha.tankclient;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

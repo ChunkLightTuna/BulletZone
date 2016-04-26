@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient.ui;
+package com.cs619.alpha.tankclient.ui;
 
 import android.content.Context;
 import android.os.Handler;
@@ -10,7 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.cs619.karen.tankclient.R;
+import com.cs619.alpha.tankclient.R;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;

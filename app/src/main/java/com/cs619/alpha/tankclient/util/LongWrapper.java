@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient.util;
+package com.cs619.alpha.tankclient.util;
 
 /**
  * Created by simon on 10/1/14.

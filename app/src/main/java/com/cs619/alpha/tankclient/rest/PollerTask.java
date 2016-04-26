@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient.rest;
+package com.cs619.alpha.tankclient.rest;
 
 /**
  * Created by karenjin on 10/21/15.
@@ -7,8 +7,8 @@ package com.cs619.karen.tankclient.rest;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.cs619.karen.tankclient.ui.GridAdapter;
-import com.cs619.karen.tankclient.util.GridWrapper;
+import com.cs619.alpha.tankclient.ui.GridAdapter;
+import com.cs619.alpha.tankclient.util.GridWrapper;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;

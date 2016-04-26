@@ -1,4 +1,4 @@
-package com.cs619.karen.tankclient.controller;
+package com.cs619.alpha.tankclient.controller;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -7,8 +7,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-import com.cs619.karen.tankclient.Tank;
-import com.cs619.karen.tankclient.rest.BulletZoneRestClient;
+import com.cs619.alpha.tankclient.Tank;
+import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 
 /**
  * Created by Chris Oelerich on 4/13/16.

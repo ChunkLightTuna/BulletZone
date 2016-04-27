@@ -7,6 +7,7 @@ package com.cs619.alpha.tankclient.rest;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.cs619.alpha.tankclient.ReplayDatabase;
 import com.cs619.alpha.tankclient.ui.GridAdapter;
 import com.cs619.alpha.tankclient.util.GridWrapper;
 
@@ -24,6 +25,7 @@ public class PollerTask {
 
 
   private GridAdapter adapter;
+  private ReplayDatabase db;
 
   @RestService
   BulletZoneRestClient restClient;
@@ -50,6 +52,7 @@ public class PollerTask {
     this.adapter = adapter;
   }
 
+  public void setDb( ReplayDatabase db ){ this.db = db; }
   /**
    * Stay on UI thread as to avoid blocks.
    *
@@ -60,7 +63,7 @@ public class PollerTask {
     Log.d(TAG, "grid at timestamp: " + gw.getTimeStamp());
 
     adapter.updateList(gw.getGrid());
-
+    //db.addGrid( gw );
     //busProvider.getEventBus().post(new GridUpdateEvent(gw));
   }
 }

@@ -58,6 +58,7 @@ public class TankClientActivity extends AppCompatActivity
     private BooleanWrapper bw;
     private Tank t;
     private long tankId = -1;
+    private ReplayDatabase db;
 
     /**
      * Google android lifecycle yo.
@@ -71,11 +72,10 @@ public class TankClientActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gamepad = new Gamepad(tankId, restClient, this);
-
-
+        db = new ReplayDatabase(this);
         bw = new BooleanWrapper();
         t = new Tank(tankId);
+        gamepad = new Gamepad(t, restClient, this);
         Log.wtf(TAG, "t created with " + tankId);
 
 
@@ -91,6 +91,7 @@ public class TankClientActivity extends AppCompatActivity
     protected void afterViewInjection() {
         mGridAdapter.setTankId(tankId);
         gridPollTask.setAdapter(mGridAdapter);
+        gridPollTask.setDb(db);
         joinAsync();
         SystemClock.sleep(500);
 
@@ -120,7 +121,7 @@ public class TankClientActivity extends AppCompatActivity
      */
     @Click({R.id.buttonForward})
     public void moveForward() {
-        gamepad.move(t.getId(), t.getDir());
+        gamepad.moveFd();
     }
 
     /**
@@ -130,7 +131,7 @@ public class TankClientActivity extends AppCompatActivity
      */
     @Click({R.id.buttonBackward})
     public void moveBk() {
-        gamepad.move(t.getId(), t.getRevDir());
+        gamepad.moveBk();//(t.getId(), t.getRevDir());
     }
 
     /**
@@ -140,8 +141,8 @@ public class TankClientActivity extends AppCompatActivity
      */
     @Click({R.id.buttonLeft})
     public void turnL() {
-        gamepad.turn(t.getId(), t.getLeftDir());
-        t.setDir(t.getLeftDir());
+        gamepad.turnL();//(t.getId(), t.getLeftDir());
+//        t.setDir(t.getLeftDir());
     }
 
     /**
@@ -151,8 +152,8 @@ public class TankClientActivity extends AppCompatActivity
      */
     @Click({R.id.buttonRight})
     public void turnR() {
-        gamepad.turn(t.getId(), t.getRightDir());
-        t.setDir(t.getRightDir());
+        gamepad.turnR();//(t.getId(), t.getRightDir());
+//        t.setDir(t.getRightDir());
     }
 
     /**
@@ -162,29 +163,29 @@ public class TankClientActivity extends AppCompatActivity
      */
     @Click({R.id.buttonFire1})
     public void fireOne() {
-        gamepad.fire(t.getId(), 1);
+        gamepad.fire(1);
     }
 
     /**
      * provides hook for gamepad fire.
      * Would have attached listener from Gamepad, but was running into issueproblems.
      *
-     * @param v View
+     *
      */
     @Click({R.id.buttonFire2})
     public void fireTwo() {
-        gamepad.fire(t.getId(), 2);
+        gamepad.fire(2);
     }
 
     /**
      * provides hook for gamepad fire.
      * Would have attached listener from Gamepad, but was running into issueproblems.
      *
-     * @param v View
+     *
      */
     @Click({R.id.buttonFire3})
     public void fireThree() {
-        gamepad.fire(t.getId(), 3);
+        gamepad.fire(3);
     }
 
     @Override

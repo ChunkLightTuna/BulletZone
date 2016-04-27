@@ -85,7 +85,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="moveForward"
             android:src="@drawable/ic_arrow_upward_black_24dp"/>
         <!--app:layout_marginLeftPercent="33%"-->
         <!--app:layout_marginRightPercent="33%"-->
@@ -111,7 +110,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="turnL"
             android:src="@drawable/ic_arrow_back_black_24dp"/>
 
         <ImageButton
@@ -119,7 +117,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="moveBk"
             android:src="@drawable/ic_arrow_downward_black_24dp"/>
 
         <ImageButton
@@ -127,7 +124,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="turnR"
             android:src="@drawable/ic_arrow_forward_black_24dp"/>
 
     </LinearLayout>

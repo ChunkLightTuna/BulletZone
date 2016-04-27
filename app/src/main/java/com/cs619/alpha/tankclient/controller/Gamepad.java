@@ -110,7 +110,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
 
       if (speed > SHAKE_THRESHOLD) {
         Log.wtf("sensor", "shake detected w/ speed: " + speed);
-        fire(t.getId());
+        fire(t.getId(), 1);
       }
       vOld[0] = v[0];
       vOld[1] = v[1];
@@ -123,9 +123,9 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
    *
    * @param id long
    */
-  public void fire(long id) {
+  public void fire(long id, int i) {
     try {
-      restClient.fire(id, 1);
+      restClient.fire(id, i);
     } catch (Exception e) {
       Log.e(TAG, "fire: ", e);
     }

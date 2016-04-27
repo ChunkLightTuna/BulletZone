@@ -68,12 +68,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
-        <!--<android.support.percent.PercentRelativeLayout-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="0dp">-->
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -87,17 +81,12 @@
             android:layout_weight="1"
             android:onClick="moveForward"
             android:src="@drawable/ic_arrow_upward_black_24dp"/>
-        <!--app:layout_marginLeftPercent="33%"-->
-        <!--app:layout_marginRightPercent="33%"-->
-        <!--app:layout_widthPercent="33%"/>-->
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1">
         </View>
-
-        <!--</android.support.percent.PercentRelativeLayout>-->
 
     </LinearLayout>
 

@@ -2,31 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/game_join"
-            android:icon="@drawable/ic_check_black_24dp"
-            android:title="Join Game"/>
-        <item
-            android:id="@+id/game_quit"
-            android:icon="@drawable/ic_close_black_24dp"
-            android:title="Leave Game"/>
-        <item
-            android:id="@+id/exit"
-            android:icon="@drawable/ic_power_settings_new_black_24dp"
-            android:title="Quit"/>
+        <item android:title="Game Mode">
+            <menu>
+                <item
+                    android:id="@+id/mode_play"
+                    android:icon="@drawable/ic_play_arrow_black_24dp"
+                    android:title="Play"
+                    android:checkable="true"
+                    android:checked="true"/>
+                <item
+                    android:id="@+id/mode_replay"
+                    android:icon="@drawable/ic_replay_black_24dp"
+                    android:title="Replay"
+                    android:checkable="true"/>
+            </menu>
+        </item>
     </group>
 
-    <item android:title="Game Mode">
-        <menu>
-            <item
-                android:id="@+id/mode_play"
-                android:icon="@drawable/ic_play_arrow_black_24dp"
-                android:title="Play"/>
-            <item
-                android:id="@+id/mode_replay"
-                android:icon="@drawable/ic_replay_black_24dp"
-                android:title="Replay"/>
-        </menu>
-    </item>
-
+    <item
+        android:id="@+id/game_join"
+        android:icon="@drawable/ic_check_black_24dp"
+        android:title="Join Game"/>
+    <item
+        android:id="@+id/game_quit"
+        android:icon="@drawable/ic_close_black_24dp"
+        android:title="Leave Game"/>
+    <item
+        android:id="@+id/exit"
+        android:icon="@drawable/ic_power_settings_new_black_24dp"
+        android:title="Quit"/>
 </menu>

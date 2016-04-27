@@ -8,11 +8,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import com.cs619.alpha.tankclient.controller.Gamepad;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
@@ -36,10 +34,6 @@ public class TankClientActivity extends AppCompatActivity
 
   private static final String TAG = "TankClientActivity";
   Gamepad gamepad;
-
-  String[] drawerItems;
-  DrawerLayout drawerLayout;
-  ListView drawerList;
 
   @Bean
   protected GridAdapter mGridAdapter;
@@ -77,8 +71,6 @@ public class TankClientActivity extends AppCompatActivity
     t = new Tank(tankId);
     Log.wtf(TAG, "t created with " + tankId);
 
-
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
@@ -154,17 +146,6 @@ public class TankClientActivity extends AppCompatActivity
     t.setDir(t.getRightDir());
   }
 
-  /**
-   * provides hook for gamepad fire.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   *
-   * @param v View
-   */
-  public void fire(View v) {
-    gamepad.fire(t.getId());
-  }
-
-
   @Override
   public void onBackPressed() {
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -176,23 +157,11 @@ public class TankClientActivity extends AppCompatActivity
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_main, menu);
-    return true;
-  }
-
-  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
-    }
 
     return super.onOptionsItemSelected(item);
   }
@@ -203,18 +172,16 @@ public class TankClientActivity extends AppCompatActivity
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_camera) {
+    if (id == R.id.mode_play) {
 
-    } else if (id == R.id.nav_gallery) {
+    }else if (id == R.id.mode_play) {
 
-    } else if (id == R.id.nav_slideshow) {
-
-    } else if (id == R.id.nav_manage) {
-
-    } else if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_send) {
-
+    }else if (id == R.id.mode_replay) {
+    }else if (id == R.id.game_join) {
+    }else if (id == R.id.game_quit) {
+    }else if (id == R.id.exit) {
+    }else if (id == R.id.mode_play) {
+    }else if (id == R.id.mode_play) {
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -9,13 +9,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/frame_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-    <!--</FrameLayout>-->
-
     <include layout="@layout/content_main"/>
 
     <android.support.design.widget.NavigationView

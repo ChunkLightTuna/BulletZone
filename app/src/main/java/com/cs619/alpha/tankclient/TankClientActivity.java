@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.GridView;
 
 import com.cs619.alpha.tankclient.controller.Gamepad;
-import com.cs619.alpha.tankclient.controller.SideSettingsListener;
+import com.cs619.alpha.tankclient.controller.Settings;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 import com.cs619.alpha.tankclient.rest.PollerTask;
 import com.cs619.alpha.tankclient.ui.GridAdapter;
@@ -20,6 +20,7 @@ import com.cs619.alpha.tankclient.util.BooleanWrapper;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
@@ -63,7 +64,7 @@ public class TankClientActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    gamepad = new Gamepad(tankId, restClient, this);
+    gamepad = new Gamepad(t, restClient, this);
 
     bw = new BooleanWrapper();
     t = new Tank(tankId);
@@ -71,8 +72,8 @@ public class TankClientActivity extends AppCompatActivity {
 
 
     //inflate fragment
-    if(findViewById(R.id.control_container) != null) {
-      if(savedInstanceState == null ) {
+    if (findViewById(R.id.control_container) != null) {
+      if (savedInstanceState == null) {
 //        PlayControls pc = new PlayControls();
 //
 //        getSupportFragmentManager().beginTransaction().add(R.id.control_container, pc).commit();
@@ -88,7 +89,7 @@ public class TankClientActivity extends AppCompatActivity {
   @AfterViews
   protected void afterViewInjection() {
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    SideSettingsListener ssl = new SideSettingsListener(this, restClient, t);
+    Settings ssl = new Settings(this, restClient, t);
     navigationView.setNavigationItemSelectedListener(ssl);
 
     mGridAdapter.setTankId(tankId);
@@ -119,5 +120,70 @@ public class TankClientActivity extends AppCompatActivity {
     } else {
       super.onBackPressed();
     }
+  }
+
+  /**
+   * provides hook for gamepad move forward.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonForward})
+  public void moveForward() {
+    gamepad.moveFd();
+  }
+
+  /**
+   * provides hook for gamepad move back.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonBackward})
+  public void moveBk() {
+    gamepad.moveBk();//(t.getId(), t.getRevDir());
+  }
+
+  /**
+   * provides hook for gamepad move left.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonLeft})
+  public void turnL() {
+    gamepad.turnL();//(t.getId(), t.getLeftDir());
+//        t.setDir(t.getLeftDir());
+  }
+
+  /**
+   * provides hook for gamepad turn right.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonRight})
+  public void turnR() {
+    gamepad.turnR();//(t.getId(), t.getRightDir());
+//        t.setDir(t.getRightDir());
+  }
+
+  /**
+   * provides hook for gamepad fire.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonFire1})
+  public void fireOne() {
+    gamepad.fire(1);
+  }
+
+  /**
+   * provides hook for gamepad fire.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonFire2})
+  public void fireTwo() {
+    gamepad.fire(2);
+  }
+
+  /**
+   * provides hook for gamepad fire.
+   * Would have attached listener from Gamepad, but was running into issueproblems.
+   */
+  @Click({R.id.buttonFire3})
+  public void fireThree() {
+    gamepad.fire(3);
   }
 }

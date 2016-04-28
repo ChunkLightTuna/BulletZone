@@ -22,6 +22,7 @@ import org.androidannotations.annotations.rest.RestService;
 public class PollerTask {
   private static final String TAG = "GridPollerTask";
 
+  private boolean play = true;
 
   private GridAdapter adapter;
 
@@ -29,14 +30,15 @@ public class PollerTask {
   BulletZoneRestClient restClient;
 
 
+
   /**
    * poll server.
    */
   @Background(id = "grid_poller_task")
   public void doPoll() {
-    while (true) {
-      onGridUpdate(restClient.grid());
-      // poll server every 100ms
+    while (play) {
+        onGridUpdate(restClient.grid());
+        // poll server every 100ms
       SystemClock.sleep(100);
     }
   }

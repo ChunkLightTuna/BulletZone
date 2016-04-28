@@ -19,17 +19,17 @@ import com.cs619.alpha.tankclient.ui.ReplayControls;
 /**
  * Created by Chris Oelerich on 4/26/16.
  */
-public class SideSettingsListener
+public class Settings
     implements NavigationView.OnNavigationItemSelectedListener {
 
-  private final static String TAG = SideSettingsListener.class.getSimpleName();
+  private final static String TAG = Settings.class.getSimpleName();
   private Context context;
   private BulletZoneRestClient restClient;
   private Tank tank;
   private PlayControls playControls;
   private ReplayControls replayControls;
 
-  public SideSettingsListener(Context context, BulletZoneRestClient restClient, Tank tank) {
+  public Settings(Context context, BulletZoneRestClient restClient, Tank tank) {
     this.context = context;
     this.restClient = restClient;
     this.tank = tank;
@@ -47,20 +47,22 @@ public class SideSettingsListener
 
     if (id == R.id.mode_play) {
 
-      ((TankClientActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.control_container, playControls).commit();
+      ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
+          .replace(R.id.control_container, playControls).commit();
 
     } else if (id == R.id.mode_replay) {
 
-      ((TankClientActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.control_container, replayControls).commit();
+      ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
+          .replace(R.id.control_container, replayControls).commit();
 
     } else if (id == R.id.game_join) {
       tank.setId(restClient.join().getResult());
 
       Log.d(TAG, "tankId is " + tank.getId());
 
-    } else if (id == R.id.game_quit) {
-      if (tank.getId() != -1)
-        restClient.leave(tank.getId());
+//    } else if (id == R.id.game_quit) {
+//      if (tank.getId() != -1)
+//        restClient.leave(tank.getId());
 
     } else if (id == R.id.exit) {
       Intent startMain = new Intent(Intent.ACTION_MAIN);
@@ -69,7 +71,9 @@ public class SideSettingsListener
       context.startActivity(startMain);
     }
 
-    DrawerLayout drawer = (DrawerLayout) ((Activity) context).getWindow().getDecorView().findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = (DrawerLayout) ((Activity) context).getWindow().getDecorView()
+        .findViewById(R.id.drawer_layout);
+
     drawer.closeDrawer(GravityCompat.START);
     return true;
   }

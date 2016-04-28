@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.cs619.alpha.tankclient.Tank;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
+import com.cs619.alpha.tankclient.util.BooleanWrapper;
 
 /**
  * Created by Chris Oelerich on 4/13/16.
@@ -23,8 +24,8 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   private long lastUpdate;
   //  private Context context;
 //
-//  private BooleanWrapper bw;
-  private Tank t;
+  private BooleanWrapper bw;
+  private Tank tank;
 
   private BulletZoneRestClient restClient;
 
@@ -47,7 +48,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
 //    }
 //  }
 
-  public Gamepad(long tankId, BulletZoneRestClient restClient, Context context) {
+  public Gamepad(Tank tank, BulletZoneRestClient restClient, Context context) {
 
     SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -56,7 +57,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
     }
 
     this.restClient = restClient;
-    t = new Tank(tankId);
+    this.tank = tank;
 
 //    this.context = context;
 //
@@ -70,11 +71,11 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
 //    fireButton.setBackgroundColor(Color.BLUE);
 //    fireButton.setOnClickListener(this);
 
-//    bw = restClientFinal.move(t.getId(), (byte) t.getDir());
-//    bw = restClientFinal.turn(t.getId(), (byte) t.getRightDir());
-//    bw = restClientFinal.move(t.getId(), (byte) t.getRevDir());
-//    bw = restClientFinal.move(t.getId(), (byte) t.getLeftDir());
-//    bw = restClientFinal.fire(t.getId());
+//    bw = restClientFinal.move(tank.getId(), (byte) tank.getDir());
+//    bw = restClientFinal.turn(tank.getId(), (byte) tank.getRightDir());
+//    bw = restClientFinal.move(tank.getId(), (byte) tank.getRevDir());
+//    bw = restClientFinal.move(tank.getId(), (byte) tank.getLeftDir());
+//    bw = restClientFinal.fire(tank.getId());
   }
 
   /**
@@ -110,7 +111,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
 
       if (speed > SHAKE_THRESHOLD) {
         Log.wtf("sensor", "shake detected w/ speed: " + speed);
-        fire(t.getId());
+        fire(1);
       }
       vOld[0] = v[0];
       vOld[1] = v[1];
@@ -121,11 +122,11 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * fire all phasers.
    *
-   * @param id long
+   * @param i long
    */
-  public void fire(long id) {
+  public void fire(int i) {
     try {
-      restClient.fire(id, 1);
+      restClient.fire(tank.getId(), i);
     } catch (Exception e) {
       Log.e(TAG, "fire: ", e);
     }
@@ -134,12 +135,18 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * move tank.
    *
-   * @param id  long
-   * @param dir int
    */
-  public void move(long id, int dir) {
+  public void moveBk(){//(long id, int dir) {
     try {
-      restClient.move(id, (byte) dir);
+      restClient.move(tank.getId(), (byte) tank.getRevDir());
+    } catch (Exception e) {
+      Log.e(TAG, "move: ", e);
+    }
+  }
+
+  public void moveFd(){//(long id, int dir) {
+    try {
+      restClient.move(tank.getId(), (byte) tank.getDir() );
     } catch (Exception e) {
       Log.e(TAG, "move: ", e);
     }
@@ -148,12 +155,24 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * turn tank.
    *
-   * @param id  long
-   * @param dir int
    */
-  public void turn(long id, int dir) {
+  public void turnL(){//(long id, int dir) {
     try {
-      restClient.turn(id, (byte) dir);
+      bw = restClient.turn(tank.getId(), (byte) tank.getLeftDir() );
+      if( bw.isResult() ){
+        tank.setDir(tank.getLeftDir() );
+      }
+    } catch (Exception e) {
+      Log.e(TAG, "turn: ", e);
+    }
+  }
+
+  public void turnR(){//(long id, int dir) {
+    try {
+      bw = restClient.turn(tank.getId(), (byte) tank.getRightDir() );
+      if( bw.isResult() ){
+        tank.setDir(tank.getRightDir() );
+      }
     } catch (Exception e) {
       Log.e(TAG, "turn: ", e);
     }

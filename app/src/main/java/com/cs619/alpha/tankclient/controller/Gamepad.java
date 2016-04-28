@@ -7,9 +7,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import com.cs619.alpha.tankclient.R;
 import com.cs619.alpha.tankclient.Tank;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 import com.cs619.alpha.tankclient.util.BooleanWrapper;
+
+import org.androidannotations.annotations.Click;
 
 /**
  * Created by Chris Oelerich on 4/13/16.
@@ -123,6 +126,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
    *
    * @param i long
    */
+  //@Click({R.id.buttonFire1})
   public void fire(int i) {
     try {
       restClient.fire(t.getId(), i);
@@ -135,6 +139,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
    * move tank.
    *
    */
+  //@Click({R.id.buttonBackward})
   public void moveBk(){//(long id, int dir) {
     try {
       restClient.move(t.getId(), (byte) t.getRevDir());
@@ -143,6 +148,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
     }
   }
 
+  //@Click({R.id.buttonForward})
   public void moveFd(){//(long id, int dir) {
     try {
       restClient.move( t.getId(), (byte) t.getDir() );
@@ -155,6 +161,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
    * turn tank.
    *
    */
+  //@Click({R.id.buttonLeft})
   public void turnL(){//(long id, int dir) {
     try {
       bw = restClient.turn(t.getId(), (byte) t.getLeftDir() );
@@ -166,6 +173,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
     }
   }
 
+  //@Click({R.id.buttonRight})
   public void turnR(){//(long id, int dir) {
     try {
       bw = restClient.turn(t.getId(), (byte) t.getRightDir() );

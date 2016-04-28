@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item android:title="Game Mode">
+
+    <item android:title="Game Mode">
+        <group android:checkableBehavior="single">
             <menu>
                 <item
                     android:id="@+id/mode_play"
-                    android:icon="@drawable/ic_play_arrow_black_24dp"
-                    android:title="Play"
                     android:checkable="true"
-                    android:checked="true"/>
+                    android:icon="@drawable/ic_play_arrow_black_24dp"
+                    android:title="Play"/>
                 <item
                     android:id="@+id/mode_replay"
+                    android:checkable="true"
                     android:icon="@drawable/ic_replay_black_24dp"
-                    android:title="Replay"
-                    android:checkable="true"/>
+                    android:title="Replay"/>
             </menu>
-        </item>
-    </group>
+        </group>
+    </item>
+
 
     <item
         android:id="@+id/game_join"

@@ -1,14 +1,12 @@
 package com.cs619.alpha.tankclient.ui;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.cs619.alpha.tankclient.R;
 
@@ -164,23 +162,27 @@ public class GridAdapter extends BaseAdapter {
    */
   private void checkPulse(Context context) {
     boolean christLives = false;
-    for (int[] i : mEntities) {
-      for (int j : i) {
-        if (tankId == (j / 10000) - (j / 10000000) * 1000) {
-          christLives = true;
+    if (tankId != -1) {
+      for (int[] i : mEntities) {
+        for (int j : i) {
+          if (tankId == (j / 10000) - (j / 10000000) * 1000) {
+            christLives = true;
+          }
         }
       }
-    }
 
-    if (!christLives) {
-      Toast.makeText(context, "YOU DED", Toast.LENGTH_LONG).show();
-      Handler handler = new Handler();
-      handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-          System.exit(0);
-        }
-      }, 3000);
+      if (!christLives) {
+//        Toast.makeText(context, "YOU DED", Toast.LENGTH_LONG).show();
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//          @Override
+//          public void run() {
+//            System.exit(0);
+//          }
+//        }, 3000);
+
+//        restClient.leave(tankId);
+      }
     }
   }
 }

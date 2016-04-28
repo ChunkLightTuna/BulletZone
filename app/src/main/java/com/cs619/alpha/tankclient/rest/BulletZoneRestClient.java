@@ -15,11 +15,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestClientException;
 
 /**
- * Created by karenjin on 10/21/15.
+ * Created by alphajin on 10/21/15.
  */
 
 @Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
-    converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
+        converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
 )
 /**
  * Rest client for retrieving from shitty central server. Beware of exceptions!
@@ -71,8 +71,8 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
    * @param tankId long
    * @return BooleanWrapper
    */
-  @Put("/{tankId}/fire")
-  BooleanWrapper fire(long tankId, int type);
+  @Put("/{tankId}/fire/{strength}")
+  BooleanWrapper fire(long tankId, int strength);
 
   /**
    * Quit game. reported as buggy. beware!

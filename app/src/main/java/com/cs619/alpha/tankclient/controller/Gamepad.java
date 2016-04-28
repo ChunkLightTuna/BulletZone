@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.cs619.alpha.tankclient.Tank;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
-import com.cs619.alpha.tankclient.util.BooleanWrapper;
 
 /**
  * Created by Chris Oelerich on 4/13/16.
@@ -24,8 +23,8 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   private long lastUpdate;
   //  private Context context;
 //
-  private BooleanWrapper bw;
-  private Tank tank;
+//  private BooleanWrapper bw;
+  private Tank t;
 
   private BulletZoneRestClient restClient;
 
@@ -57,7 +56,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
     }
 
     this.restClient = restClient;
-    this.tank = tank;
+    t = tank;
 
 //    this.context = context;
 //
@@ -71,11 +70,11 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
 //    fireButton.setBackgroundColor(Color.BLUE);
 //    fireButton.setOnClickListener(this);
 
-//    bw = restClientFinal.move(tank.getId(), (byte) tank.getDir());
-//    bw = restClientFinal.turn(tank.getId(), (byte) tank.getRightDir());
-//    bw = restClientFinal.move(tank.getId(), (byte) tank.getRevDir());
-//    bw = restClientFinal.move(tank.getId(), (byte) tank.getLeftDir());
-//    bw = restClientFinal.fire(tank.getId());
+//    bw = restClientFinal.move(t.getId(), (byte) t.getDir());
+//    bw = restClientFinal.turn(t.getId(), (byte) t.getRightDir());
+//    bw = restClientFinal.move(t.getId(), (byte) t.getRevDir());
+//    bw = restClientFinal.move(t.getId(), (byte) t.getLeftDir());
+//    bw = restClientFinal.fire(t.getId());
   }
 
   /**
@@ -111,7 +110,7 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
 
       if (speed > SHAKE_THRESHOLD) {
         Log.wtf("sensor", "shake detected w/ speed: " + speed);
-        fire(1);
+        fire(t.getId());
       }
       vOld[0] = v[0];
       vOld[1] = v[1];
@@ -122,11 +121,11 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * fire all phasers.
    *
-   * @param i long
+   * @param id long
    */
-  public void fire(int i) {
+  public void fire(long id) {
     try {
-      restClient.fire(tank.getId(), i);
+      restClient.fire(id, 1);
     } catch (Exception e) {
       Log.e(TAG, "fire: ", e);
     }
@@ -135,18 +134,12 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * move tank.
    *
+   * @param id  long
+   * @param dir int
    */
-  public void moveBk(){//(long id, int dir) {
+  public void move(long id, int dir) {
     try {
-      restClient.move(tank.getId(), (byte) tank.getRevDir());
-    } catch (Exception e) {
-      Log.e(TAG, "move: ", e);
-    }
-  }
-
-  public void moveFd(){//(long id, int dir) {
-    try {
-      restClient.move(tank.getId(), (byte) tank.getDir() );
+      restClient.move(id, (byte) dir);
     } catch (Exception e) {
       Log.e(TAG, "move: ", e);
     }
@@ -155,24 +148,12 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * turn tank.
    *
+   * @param id  long
+   * @param dir int
    */
-  public void turnL(){//(long id, int dir) {
+  public void turn(long id, int dir) {
     try {
-      bw = restClient.turn(tank.getId(), (byte) tank.getLeftDir() );
-      if( bw.isResult() ){
-        tank.setDir(tank.getLeftDir() );
-      }
-    } catch (Exception e) {
-      Log.e(TAG, "turn: ", e);
-    }
-  }
-
-  public void turnR(){//(long id, int dir) {
-    try {
-      bw = restClient.turn(tank.getId(), (byte) tank.getRightDir() );
-      if( bw.isResult() ){
-        tank.setDir(tank.getRightDir() );
-      }
+      restClient.turn(id, (byte) dir);
     } catch (Exception e) {
       Log.e(TAG, "turn: ", e);
     }

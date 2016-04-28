@@ -29,13 +29,13 @@ public class Settings
   private PlayControls playControls;
   private ReplayControls replayControls;
 
-  public Settings(Context context, BulletZoneRestClient restClient, Tank tank) {
+  public Settings(Context context, BulletZoneRestClient restClient, Tank tank, PlayControls playControls, ReplayControls replayControls) {
     this.context = context;
     this.restClient = restClient;
     this.tank = tank;
 
-    playControls = new PlayControls();
-    replayControls = new ReplayControls();
+    this.playControls = playControls;
+    this.replayControls = replayControls;
   }
 
   @SuppressWarnings("StatementWithEmptyBody")
@@ -57,6 +57,7 @@ public class Settings
 
     } else if (id == R.id.game_join) {
       tank.setId(restClient.join().getResult());
+
 
       Log.d(TAG, "tankId is " + tank.getId());
 

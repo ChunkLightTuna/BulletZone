@@ -9,6 +9,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.cs619.alpha.tankclient.R;
+import com.cs619.alpha.tankclient.Tank;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
@@ -25,7 +26,7 @@ public class GridAdapter extends BaseAdapter {
   protected LayoutInflater inflater;
   private int[][] mEntities = new int[16][16];
   private int[][] lastEntities = new int[16][16];
-  private long tankId;
+  private Tank tank;
 
   public void updateList(int[][] entities) {
     synchronized (monitor) {
@@ -37,10 +38,10 @@ public class GridAdapter extends BaseAdapter {
   /**
    * set tank id.
    *
-   * @param tankId long
+   * @param tank Tank
    */
-  public void setTankId(long tankId) {
-    this.tankId = tankId;
+  public void setTank(Tank tank) {
+    this.tank = tank;
   }
 
   /**
@@ -122,7 +123,7 @@ public class GridAdapter extends BaseAdapter {
 
             tankId = (val / 10000) - (val / 10000000) * 1000;
 
-            if (this.tankId == tankId) {
+            if (tank.getId() == tankId) {
               up = R.drawable.tank_up_blue;
               right = R.drawable.tank_right_blue;
               down = R.drawable.tank_down_blue;
@@ -162,10 +163,10 @@ public class GridAdapter extends BaseAdapter {
    */
   private void checkPulse(Context context) {
     boolean christLives = false;
-    if (tankId != -1) {
+    if (tank.getId() != -1) {
       for (int[] i : mEntities) {
         for (int j : i) {
-          if (tankId == (j / 10000) - (j / 10000000) * 1000) {
+          if (tank.getId() == (j / 10000) - (j / 10000000) * 1000) {
             christLives = true;
           }
         }

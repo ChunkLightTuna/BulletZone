@@ -7,6 +7,7 @@ package com.cs619.alpha.tankclient.rest;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.cs619.alpha.tankclient.ReplayDatabase;
 import com.cs619.alpha.tankclient.ui.GridAdapter;
 import com.cs619.alpha.tankclient.util.GridWrapper;
 
@@ -25,11 +26,10 @@ public class PollerTask {
   private boolean play = true;
 
   private GridAdapter adapter;
+  private ReplayDatabase replayDatabase;
 
   @RestService
   BulletZoneRestClient restClient;
-
-
 
   /**
    * poll server.
@@ -37,8 +37,9 @@ public class PollerTask {
   @Background(id = "grid_poller_task")
   public void doPoll() {
     while (play) {
-        onGridUpdate(restClient.grid());
-        // poll server every 100ms
+      onGridUpdate(restClient.grid());
+      replayDatabase.addGrid(restClient.grid());
+      // poll server every 100ms
       SystemClock.sleep(100);
     }
   }
@@ -51,6 +52,11 @@ public class PollerTask {
   public void setAdapter(GridAdapter adapter) {
     this.adapter = adapter;
   }
+
+  public void setDatabase(ReplayDatabase replayDatabase) {
+    this.replayDatabase = replayDatabase;
+  }
+
 
   /**
    * Stay on UI thread as to avoid blocks.

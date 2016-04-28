@@ -73,15 +73,14 @@ public class TankClientActivity extends AppCompatActivity {
 
 
     playControls = PlayControls.newInstance(gamepad);
+    replayControls = ReplayControls.newInstance(gridPollTask);
 
-    replayControls = new ReplayControls();
     Log.wtf(TAG, "t created with " + t.getId());
 
 
     //inflate play fragment
     if (findViewById(R.id.control_container) != null) {
       if (savedInstanceState == null) {
-//
         getSupportFragmentManager().beginTransaction().add(R.id.control_container, playControls).commit();
 
       }
@@ -101,6 +100,7 @@ public class TankClientActivity extends AppCompatActivity {
     ReplayDatabase replayDatabase = new ReplayDatabase(this);
 
     mGridAdapter.setTank(t);
+
     gridPollTask.setAdapter(mGridAdapter);
     gridPollTask.setDatabase(replayDatabase);
     joinAsync();

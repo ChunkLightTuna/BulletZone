@@ -105,7 +105,6 @@ public class TankClientActivity extends AppCompatActivity
     void joinAsync() {
         try {
             tankId = restClient.join().getResult();
-
             t.setId(tankId);
             Log.d(TAG, "tankId is " + tankId);
             gridPollTask.doPoll(); // start polling the server

@@ -63,7 +63,7 @@ public class PollerTask {
     Log.d(TAG, "grid at timestamp: " + gw.getTimeStamp());
 
     adapter.updateList(gw.getGrid());
-    //db.addGrid( gw );
+    db.addGrid( gw );
     //busProvider.getEventBus().post(new GridUpdateEvent(gw));
   }
 }

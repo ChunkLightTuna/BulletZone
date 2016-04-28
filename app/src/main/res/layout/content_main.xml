@@ -10,125 +10,31 @@
               tools:context=".TankClientActivity">
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="5"
-    tools:background="#F00">
-
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray"
-        android:numColumns="16"
-        tools:layout_height="350dp"
-        tools:listitem="@layout/field_item">
-    </GridView>
-
-</LinearLayout>
-
-<LinearLayout
-    android:id="@+id/LinearLayoutControl"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="2"
-    android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        tools:background="#F00">
 
-        <Button
-            android:id="@+id/buttonFire1"
-            android:layout_width="0dp"
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/fireOne"/>
-
-        <Button
-            android:id="@+id/buttonFire2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/fireTwo"/>
-
-        <Button
-            android:id="@+id/buttonFire3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/fireThree"/>
+            android:background="@color/gray"
+            android:numColumns="16"
+            tools:layout_height="350dp"
+            tools:listitem="@layout/field_item">
+        </GridView>
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/control_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        tools:layout="@layout/play_control_view">
 
-
-        <!--<android.support.percent.PercentRelativeLayout-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="0dp">-->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-        </View>
-
-        <ImageButton
-            android:id="@+id/buttonForward"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_upward_black_24dp"/>
-        <!--app:layout_marginLeftPercent="33%"-->
-        <!--app:layout_marginRightPercent="33%"-->
-        <!--app:layout_widthPercent="33%"/>-->
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-        </View>
-
-        <!--</android.support.percent.PercentRelativeLayout>-->
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/buttonLeft"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_back_black_24dp"/>
-
-        <ImageButton
-            android:id="@+id/buttonBackward"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_downward_black_24dp"/>
-
-        <ImageButton
-            android:id="@+id/buttonRight"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_forward_black_24dp"/>
-
-    </LinearLayout>
-
-
-</LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

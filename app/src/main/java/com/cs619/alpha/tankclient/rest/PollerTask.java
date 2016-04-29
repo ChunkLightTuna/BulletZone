@@ -49,7 +49,7 @@ public class PollerTask {
   }
 
   public void togglePlayMode(boolean live) {
-
+    Log.d(TAG, "togglePlayMode() called with: " + "live = [" + live + "]");
     if (this.live != live) {
       this.live = live;
 
@@ -62,6 +62,9 @@ public class PollerTask {
     }
   }
 
+  public boolean getPlayMode() {
+    return live;
+  }
   /**
    * poll server.
    */
@@ -72,7 +75,7 @@ public class PollerTask {
         GridWrapper gridWrapper = restClient.grid();
 
         onGridUpdate(gridWrapper.getGrid());
-        Log.i(TAG, "doPoll: " + record);
+        Log.v(TAG, "doPoll: " + record);
         if (record) {
           replayDatabase.addGrid(gridWrapper);
         }
@@ -86,10 +89,12 @@ public class PollerTask {
 
   @Background(id = "database_retrieval_task")
   public void playFromDatabase() {
+    Log.d(TAG, "playFromDatabase() called with: " + "");
     if (griderator == null || !griderator.hasNext()) {
       replayGrid = replayDatabase.readGrid();
       griderator = replayGrid.listIterator(0);
     }
+
     while (!replayPaused && griderator.hasNext()) {
       onGridUpdate(griderator.next());
       SystemClock.sleep(100 / replaySpeed);
@@ -103,25 +108,30 @@ public class PollerTask {
   }
 
   public void toggleReplayPaused() {
+    Log.d(TAG, "toggleReplayPaused() called with: " + "");
     replayPaused = !replayPaused;
     if (!replayPaused)
       playFromDatabase();
   }
 
   public boolean getReplayPaused() {
+    Log.d(TAG, "getReplayPaused() called with: " + "");
     return replayPaused;
   }
 
   public int getReplaySpeed() {
+    Log.d(TAG, "getReplaySpeed() called with: " + "");
     return replaySpeed;
   }
 
   public void startRecording() {
-//    replayDatabase.getWritableDatabase()
+    Log.d(TAG, "startRecording() called with: " + "");
+    replayDatabase.flush();
     this.record = true;
   }
 
   public void stopRecording() {
+    Log.d(TAG, "stopRecording() called with: " + "");
     replayDatabase.doneWriting(true);
     this.record = false;
   }

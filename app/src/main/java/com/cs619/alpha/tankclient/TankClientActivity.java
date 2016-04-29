@@ -136,8 +136,9 @@ public class TankClientActivity extends AppCompatActivity {
   @Override
   public void onStop() {
     super.onStop();
-    if (t.getId() != -1)
+    if (t.getId() != -1 && gridPollTask.getPlayMode()) {
       restClient.leave(t.getId());
+    }
 
     replayDatabase.doneWriting(true);
 

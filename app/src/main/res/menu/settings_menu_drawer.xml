@@ -25,7 +25,7 @@
         android:icon="@drawable/ic_check_black_24dp"
         android:title="Join Game"/>
     <item
-        android:id="@+id/game_quit"
+        android:id="@+id/game_leave"
         android:icon="@drawable/ic_close_black_24dp"
         android:title="Leave Game"/>
     <item

@@ -28,6 +28,7 @@ public class ReplayDatabase extends SQLiteOpenHelper {
   private static final String KEY_ID = "id";
   private static final String KEY_TIME = "time";
   private static final String KEY_GRID = "grid";
+
   private boolean doneWriting = false;
 
   private static final String[] COLUMNS = {KEY_ID, KEY_TIME, KEY_GRID};
@@ -60,6 +61,16 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     onUpgrade(db, oldVersion, newVersion);
   }
 
+  public void flush() {
+    SQLiteDatabase db = this.getWritableDatabase();
+
+    int del = db.delete(TABLE_REPLAYS, null, null);
+
+    Log.d(TAG, "flush() called with: " + del);
+
+    db.close();
+  }
+
   public void addGrid(GridWrapper gw) {
     byte[] serialObj;
 
@@ -81,13 +92,13 @@ public class ReplayDatabase extends SQLiteOpenHelper {
             null, //nullColumnHack
             values); // key/value -> keys = column names/ values = column values
 
-        Log.d(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
+        Log.v(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
 
         if (doneWriting) {
           db.close();
         }
       } else {
-        Log.w(TAG, "addGrid: db closed!");
+        Log.w(TAG, "addGrid: tried to access db, but was closed!");
       }
 
     } catch (Exception e) {
@@ -104,13 +115,14 @@ public class ReplayDatabase extends SQLiteOpenHelper {
 
     int[][] grid = null;
     if (cursor.moveToFirst()) {
+      Log.d(TAG, "readGrid() called with: cursor.getCount():" + cursor.getCount());
       do {
         try {
           serialObj = cursor.getBlob(cursor.getColumnIndex(KEY_GRID));
           final ByteArrayInputStream bis = new ByteArrayInputStream(serialObj);
           final ObjectInputStream ois = new ObjectInputStream(bis);
           grid = (int[][]) ois.readObject();
-          Log.d(TAG, "readGrid() called with: " + grid);
+          Log.v(TAG, "readGrid() called with: " + grid);
         } catch (Exception e) {
           Log.e(TAG, "readGrid: ", e);
         }

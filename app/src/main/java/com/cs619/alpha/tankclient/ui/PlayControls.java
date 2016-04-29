@@ -30,6 +30,7 @@ public class PlayControls extends Fragment implements View.OnClickListener {
                            Bundle savedInstanceState) {
 
     View view = inflater.inflate(R.layout.play_control_view, container, false);
+
     (view.findViewById(R.id.buttonFire1)).setOnClickListener(this);
     (view.findViewById(R.id.buttonFire2)).setOnClickListener(this);
     (view.findViewById(R.id.buttonFire3)).setOnClickListener(this);

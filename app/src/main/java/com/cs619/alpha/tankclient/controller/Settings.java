@@ -17,6 +17,8 @@ import com.cs619.alpha.tankclient.rest.PollerTask;
 import com.cs619.alpha.tankclient.ui.PlayControls;
 import com.cs619.alpha.tankclient.ui.ReplayControls;
 
+import org.springframework.web.client.HttpClientErrorException;
+
 /**
  * Created by Chris Oelerich on 4/26/16.
  */
@@ -67,9 +69,14 @@ public class Settings
 
       Log.d(TAG, "tankId is " + tank.getId());
 
-    } else if (id == R.id.game_quit) {
+    } else if (id == R.id.game_leave) {
       if (tank.getId() != -1)
-        restClient.leave(tank.getId());
+        try {
+          restClient.leave(tank.getId());
+        } catch (HttpClientErrorException e) {
+          Log.e(TAG, "onNavigationItemSelected: ", e);
+        }
+
       poller.stopRecording();
     } else if (id == R.id.exit) {
       Intent startMain = new Intent(Intent.ACTION_MAIN);

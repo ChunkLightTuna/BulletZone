@@ -13,15 +13,15 @@ import com.cs619.alpha.tankclient.controller.Gamepad;
 /**
  * Created by Chris Oelerich on 4/27/16.
  */
-public class PlayControls extends Fragment implements View.OnClickListener{
+public class PlayControls extends Fragment implements View.OnClickListener {
   private static final String TAG = PlayControls.class.getSimpleName();
   Gamepad gamepad;
 
   public static PlayControls newInstance(Gamepad gamepad) {
 
     PlayControls fragment = new PlayControls();
-
     fragment.gamepad = gamepad;
+
     return fragment;
   }
 
@@ -47,28 +47,30 @@ public class PlayControls extends Fragment implements View.OnClickListener{
 
     Log.d(TAG, "onClick() called with: " + "v = [" + v + "]");
 
-    switch (v.getId()) {
-      case R.id.buttonFire1:
-        gamepad.fire(1);
-        break;
-      case R.id.buttonFire2:
-        gamepad.fire(2);
-        break;
-      case R.id.buttonFire3:
-        gamepad.fire(3);
-        break;
-      case R.id.buttonLeft:
-        gamepad.turnL();
-        break;
-      case R.id.buttonRight:
-        gamepad.turnR();
-        break;
-      case R.id.buttonForward:
-        gamepad.moveFd();
-        break;
-      case R.id.buttonBackward:
-        gamepad.moveBk();
-        break;
+    if (gamepad != null) {
+      switch (v.getId()) {
+        case R.id.buttonFire1:
+          gamepad.fire(1);
+          break;
+        case R.id.buttonFire2:
+          gamepad.fire(2);
+          break;
+        case R.id.buttonFire3:
+          gamepad.fire(3);
+          break;
+        case R.id.buttonLeft:
+          gamepad.turnL();
+          break;
+        case R.id.buttonRight:
+          gamepad.turnR();
+          break;
+        case R.id.buttonForward:
+          gamepad.moveFd();
+          break;
+        case R.id.buttonBackward:
+          gamepad.moveBk();
+          break;
+      }
     }
   }
 }

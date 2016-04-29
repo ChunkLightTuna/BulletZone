@@ -24,10 +24,10 @@
         android:id="@+id/game_join"
         android:icon="@drawable/ic_check_black_24dp"
         android:title="Join Game"/>
-    <!--<item-->
-        <!--android:id="@+id/game_quit"-->
-        <!--android:icon="@drawable/ic_close_black_24dp"-->
-        <!--android:title="Leave Game"/>-->
+    <item
+        android:id="@+id/game_quit"
+        android:icon="@drawable/ic_close_black_24dp"
+        android:title="Leave Game"/>
     <item
         android:id="@+id/exit"
         android:icon="@drawable/ic_power_settings_new_black_24dp"

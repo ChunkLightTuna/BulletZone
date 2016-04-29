@@ -60,7 +60,8 @@ public class ReplayDatabase extends SQLiteOpenHelper {
   }
 
   public void addGrid(GridWrapper gw) {
-    byte[] serialObj = null;
+    byte[] serialObj;
+
 
     SQLiteDatabase db = this.getWritableDatabase();
 
@@ -70,21 +71,26 @@ public class ReplayDatabase extends SQLiteOpenHelper {
       oos.writeObject(gw.getGrid());
       serialObj = baos.toByteArray();
 
+
+      ContentValues values = new ContentValues();
+      values.put(KEY_TIME, gw.getTimeStamp());
+      values.put(KEY_GRID, serialObj);
+      if (db.isOpen()) {
+        db.insert(TABLE_REPLAYS, // table
+            null, //nullColumnHack
+            values); // key/value -> keys = column names/ values = column values
+
+        Log.d(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
+
+        db.close();
+      } else {
+        Log.w(TAG, "addGrid: db closed!" + db.toString());
+      }
+
     } catch (Exception e) {
       Log.e(TAG, "addGrid: ", e);
     }
 
-    ContentValues values = new ContentValues();
-    values.put(KEY_TIME, gw.getTimeStamp());
-    values.put(KEY_GRID, serialObj);
-
-    db.insert(TABLE_REPLAYS, // table
-        null, //nullColumnHack
-        values); // key/value -> keys = column names/ values = column values
-
-    Log.d(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
-
-    db.close();
   }
 
   public List<int[][]> readGrid() {

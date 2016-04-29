@@ -130,4 +130,12 @@ public class TankClientActivity extends AppCompatActivity {
       super.onBackPressed();
     }
   }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+
+
+
+  }
 }

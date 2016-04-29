@@ -67,10 +67,11 @@ public class PollerTask {
   public void doPoll() {
     while (live) {
       GridWrapper gridWrapper = restClient.grid();
-      Log.d(TAG, "doPoll() called with: " + gridWrapper);
+      Log.v(TAG, "doPoll() called with: " + gridWrapper);
 
       onGridUpdate(gridWrapper.getGrid());
       replayDatabase.addGrid(gridWrapper);
+
       // poll server every 100ms
       SystemClock.sleep(100);
     }
@@ -125,8 +126,7 @@ public class PollerTask {
 
   /**
    * Stay on UI thread as to avoid blocks.
-   *
-   * @param gw Gridwrapper
+   * @param grid int[][]
    */
   @UiThread
   public void onGridUpdate(int[][] grid) {

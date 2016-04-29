@@ -2,19 +2,20 @@ package com.cs619.alpha.tankclient.util;
 
 
 public class BooleanWrapper {
-    private boolean result;
+  private boolean result;
 
-    public BooleanWrapper() {}
+  public BooleanWrapper() {
+  }
 
-    public BooleanWrapper(boolean result) {
-        this.result = result;
-    }
+  public BooleanWrapper(boolean result) {
+    this.result = result;
+  }
 
-    public boolean isResult() {
-        return result;
-    }
+  public boolean isResult() {
+    return result;
+  }
 
-    public void setResult(boolean result) {
-        this.result = result;
-    }
+  public void setResult(boolean result) {
+    this.result = result;
+  }
 }

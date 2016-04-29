@@ -36,8 +36,8 @@ public class PlayControls extends Fragment implements View.OnClickListener {
     (view.findViewById(R.id.buttonFire3)).setOnClickListener(this);
     (view.findViewById(R.id.buttonLeft)).setOnClickListener(this);
     (view.findViewById(R.id.buttonRight)).setOnClickListener(this);
-    (view.findViewById(R.id.buttonForward)).setOnClickListener(this);
-    (view.findViewById(R.id.buttonBackward)).setOnClickListener(this);
+    (view.findViewById(R.id.buttonUp)).setOnClickListener(this);
+    (view.findViewById(R.id.buttonDown)).setOnClickListener(this);
 
     // Inflate the layout for this fragment
     return view;
@@ -60,16 +60,16 @@ public class PlayControls extends Fragment implements View.OnClickListener {
           gamepad.fire(3);
           break;
         case R.id.buttonLeft:
-          gamepad.turnL();
+          gamepad.left();
           break;
         case R.id.buttonRight:
-          gamepad.turnR();
+          gamepad.right();
           break;
-        case R.id.buttonForward:
-          gamepad.moveFd();
+        case R.id.buttonUp:
+          gamepad.up();
           break;
-        case R.id.buttonBackward:
-          gamepad.moveBk();
+        case R.id.buttonDown:
+          gamepad.down();
           break;
       }
     }

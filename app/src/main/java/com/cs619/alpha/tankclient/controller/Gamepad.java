@@ -108,20 +108,41 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * move tank.
    */
-  public void moveBk() {
+  public void down() {
     if (t.getId() != -1) {
       try {
-        restClient.move(t.getId(), (byte) t.getRevDir());
+        if( t.getDir() == 4 )
+          restClient.move(t.getId(), (byte) t.getDir());
+        else if( t.getDir() == 0 ){
+          restClient.move(t.getId(), (byte) t.getRevDir());
+        }
+        else{
+          bw = restClient.turn(t.getId(), (byte) 4);
+          if (bw.isResult()) {
+            t.setDir(4);
+          }
+        }
       } catch (Exception e) {
         Log.e(TAG, "move: ", e);
       }
     }
   }
 
-  public void moveFd() {
+  public void up() {
     if (t.getId() != -1) {
       try {
-        restClient.move(t.getId(), (byte) t.getDir());
+        if( t.getDir() == 0 )
+          restClient.move(t.getId(), (byte) t.getDir());
+        else if( t.getDir() == 4 ){
+          restClient.move(t.getId(), (byte) t.getRevDir());
+        }
+        else{
+          bw = restClient.turn(t.getId(), (byte) 0);
+          if (bw.isResult()) {
+            t.setDir(0);
+          }
+        }
+        //restClient.move(t.getId(), (byte) t.getDir());
       } catch (Exception e) {
         Log.e(TAG, "move: ", e);
       }
@@ -131,12 +152,19 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
   /**
    * turn tank.
    */
-  public void turnL() {
+  public void left() {
     if (t.getId() != -1) {
       try {
-        bw = restClient.turn(t.getId(), (byte) t.getLeftDir());
-        if (bw.isResult()) {
-          t.setDir(t.getLeftDir());
+        if( t.getDir() == 6 )
+          restClient.move(t.getId(), (byte) t.getDir());
+        else if( t.getDir() == 2 ){
+          restClient.move(t.getId(), (byte) t.getRevDir());
+        }
+        else{
+          bw = restClient.turn(t.getId(), (byte) 6);
+          if (bw.isResult()) {
+            t.setDir(6);
+          }
         }
       } catch (Exception e) {
         Log.e(TAG, "turn: ", e);
@@ -144,12 +172,19 @@ public class Gamepad implements SensorEventListener/*, View.OnClickListener*/ {
     }
   }
 
-  public void turnR() {
+  public void right() {
     if (t.getId() != -1) {
       try {
-        bw = restClient.turn(t.getId(), (byte) t.getRightDir());
-        if (bw.isResult()) {
-          t.setDir(t.getRightDir());
+        if( t.getDir() == 2 )
+          restClient.move(t.getId(), (byte) t.getDir());
+        else if( t.getDir() == 6 ){
+          restClient.move(t.getId(), (byte) t.getRevDir());
+        }
+        else{
+          bw = restClient.turn(t.getId(), (byte) 2);
+          if (bw.isResult()) {
+            t.setDir(2);
+          }
         }
       } catch (Exception e) {
         Log.e(TAG, "turn: ", e);

@@ -1,5 +1,6 @@
 package com.cs619.alpha.tankclient.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,10 +110,16 @@ public class GridAdapter extends BaseAdapter {
 //    If the value is 1TIDLIFX, then the ID of the tank is TID, it has LIF life and its direction is X.
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
       synchronized (monitor) {
+
+
+        if(col == 2 && row == 4)
+          Log.wtf("hidden wall: ", val + "");
+
         if (val > 0) {
           if (val == 1000) {
             ((ImageView) view).setImageResource(R.drawable.wall);
-
+          } else if(val == 1500) {
+            ((ImageView) view).setImageResource(R.drawable.destructable_wall);
           } else if (val >= 2000000 && val <= 3000000) {
             ((ImageView) view).setImageResource(R.mipmap.bullet);
 

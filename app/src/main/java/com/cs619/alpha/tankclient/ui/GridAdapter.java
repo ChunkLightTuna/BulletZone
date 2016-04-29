@@ -115,8 +115,16 @@ public class GridAdapter extends BaseAdapter {
           } else if(val == 1500) {
             ((ImageView) view).setImageResource(R.drawable.destructable_wall);
           } else if (val >= 2000000 && val <= 3000000) {
-            ((ImageView) view).setImageResource(R.mipmap.bullet);
-
+            int dmg = ((val % 1000) - (val % 10 )) / 10;
+            if(dmg == 10) {
+              ((ImageView) view).setImageResource(R.drawable.bullet1);
+            }
+            else if( dmg == 30 ){
+              ((ImageView) view).setImageResource(R.drawable.bullet2);
+            }
+            else{
+              ((ImageView) view).setImageResource(R.drawable.bullet3);
+            }
           } else if (val >= 10000000 && val <= 20000000) {
             int tankId, direction, up, right, down, left, life;
             direction = val % 10;

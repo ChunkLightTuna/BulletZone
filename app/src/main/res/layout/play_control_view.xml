@@ -88,13 +88,4 @@
             android:src="@drawable/ic_arrow_forward_black_24dp"/>
 
     </LinearLayout>
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal"/>
-
-
 </LinearLayout>

@@ -81,5 +81,5 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
    * @return BooleanWrapper
    */
   @Delete("/{tankId}/leave")
-  BooleanWrapper leave(long tankId);
+  String leave(long tankId);
 }

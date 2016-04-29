@@ -66,12 +66,16 @@ public class PollerTask {
   @Background(id = "grid_poller_task")
   public void doPoll() {
     while (live) {
-      GridWrapper gridWrapper = restClient.grid();
-      Log.v(TAG, "doPoll() called with: " + gridWrapper);
+      try {
+        GridWrapper gridWrapper = restClient.grid();
 
-      onGridUpdate(gridWrapper.getGrid());
-      replayDatabase.addGrid(gridWrapper);
+        onGridUpdate(gridWrapper.getGrid());
+        replayDatabase.addGrid(gridWrapper);
 
+        Log.v(TAG, "doPoll() called with: " + gridWrapper);
+      } catch (org.springframework.web.client.ResourceAccessException e) {
+        Log.e(TAG, "doPoll: ", e);
+      }
       // poll server every 100ms
       SystemClock.sleep(100);
     }

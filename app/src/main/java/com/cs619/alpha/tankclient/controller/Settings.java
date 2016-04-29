@@ -63,12 +63,7 @@ public class Settings
 
     } else if (id == R.id.game_quit) {
       if (tank.getId() != -1)
-        try {
-          restClient.leave(tank.getId());
-        } catch (org.springframework.http.converter.HttpMessageNotReadableException e) {
-          Log.e(TAG, "onNavigationItemSelected: exception on quit", e);
-        }
-
+        restClient.leave(tank.getId());
     } else if (id == R.id.exit) {
       Intent startMain = new Intent(Intent.ACTION_MAIN);
       startMain.addCategory(Intent.CATEGORY_HOME);

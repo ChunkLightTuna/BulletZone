@@ -28,6 +28,7 @@ public class ReplayDatabase extends SQLiteOpenHelper {
   private static final String KEY_ID = "id";
   private static final String KEY_TIME = "time";
   private static final String KEY_GRID = "grid";
+  private boolean doneWriting = false;
 
   private static final String[] COLUMNS = {KEY_ID, KEY_TIME, KEY_GRID};
 
@@ -75,14 +76,16 @@ public class ReplayDatabase extends SQLiteOpenHelper {
       ContentValues values = new ContentValues();
       values.put(KEY_TIME, gw.getTimeStamp());
       values.put(KEY_GRID, serialObj);
-      if (db.isOpen()) {
+      if(db.isOpen()) {
         db.insert(TABLE_REPLAYS, // table
             null, //nullColumnHack
             values); // key/value -> keys = column names/ values = column values
 
         Log.d(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
 
-        db.close();
+        if( doneWriting ) {
+          db.close();
+        }
       } else {
         Log.w(TAG, "addGrid: db closed!");
       }
@@ -90,7 +93,6 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     } catch (Exception e) {
       Log.e(TAG, "addGrid: ", e);
     }
-
   }
 
   public List<int[][]> readGrid() {
@@ -120,5 +122,9 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     }
 
     return gridList;
+  }
+
+  public void doneWriting( boolean b ){
+    this.doneWriting = b;
   }
 }

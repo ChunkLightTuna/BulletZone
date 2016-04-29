@@ -94,7 +94,7 @@ public class TankClientActivity extends AppCompatActivity {
   protected void afterViewInjection() {
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    Settings ssl = new Settings(this, restClient, t, playControls, replayControls);
+    Settings ssl = new Settings(this, restClient, t, playControls, replayControls, gridPollTask);
     navigationView.setNavigationItemSelectedListener(ssl);
 
     ReplayDatabase replayDatabase = new ReplayDatabase(this);

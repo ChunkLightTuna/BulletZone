@@ -13,6 +13,7 @@ import com.cs619.alpha.tankclient.R;
 import com.cs619.alpha.tankclient.Tank;
 import com.cs619.alpha.tankclient.TankClientActivity;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
+import com.cs619.alpha.tankclient.rest.PollerTask;
 import com.cs619.alpha.tankclient.ui.PlayControls;
 import com.cs619.alpha.tankclient.ui.ReplayControls;
 
@@ -28,11 +29,14 @@ public class Settings
   private Tank tank;
   private PlayControls playControls;
   private ReplayControls replayControls;
+  private PollerTask poller;
 
-  public Settings(Context context, BulletZoneRestClient restClient, Tank tank, PlayControls playControls, ReplayControls replayControls) {
+  public Settings(Context context, BulletZoneRestClient restClient, Tank tank,
+                  PlayControls playControls, ReplayControls replayControls, PollerTask poller) {
     this.context = context;
     this.restClient = restClient;
     this.tank = tank;
+    this.poller = poller;
 
     this.playControls = playControls;
     this.replayControls = replayControls;
@@ -54,16 +58,18 @@ public class Settings
 
       ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
           .replace(R.id.control_container, replayControls).commit();
+      poller.stopRecording();
 
     } else if (id == R.id.game_join) {
       tank.setId(restClient.join().getResult());
-
+      poller.startRecording();
 
       Log.d(TAG, "tankId is " + tank.getId());
 
     } else if (id == R.id.game_quit) {
       if (tank.getId() != -1)
         restClient.leave(tank.getId());
+      poller.stopRecording();
     } else if (id == R.id.exit) {
       Intent startMain = new Intent(Intent.ACTION_MAIN);
       startMain.addCategory(Intent.CATEGORY_HOME);

@@ -31,6 +31,7 @@ public class PollerTask {
   private static final String TAG = "GridPollerTask";
 
   private boolean live;//true == live false == replay
+  private boolean record = false; //Records to DB
 
   private int replaySpeed = 1;
   private boolean replayPaused = false;
@@ -70,8 +71,10 @@ public class PollerTask {
         GridWrapper gridWrapper = restClient.grid();
 
         onGridUpdate(gridWrapper.getGrid());
-        replayDatabase.addGrid(gridWrapper);
-
+        Log.i(TAG, "doPoll: " + record);
+        if( record ) {
+           replayDatabase.addGrid(gridWrapper);
+        }
         Log.v(TAG, "doPoll() called with: " + gridWrapper);
       } catch (org.springframework.web.client.ResourceAccessException e) {
         Log.e(TAG, "doPoll: ", e);
@@ -111,6 +114,12 @@ public class PollerTask {
 
   public int getReplaySpeed() {
     return replaySpeed;
+  }
+
+  public void startRecording(){ this.record = true; }
+  public void stopRecording(){
+    replayDatabase.doneWriting( true );
+    this.record = false;
   }
 
 

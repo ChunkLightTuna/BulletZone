@@ -16,26 +16,31 @@ import com.cs619.alpha.tankclient.rest.PollerTask;
  */
 public class ReplayControls extends Fragment implements View.OnClickListener {
   private static final String TAG = ReplayControls.class.getSimpleName();
-  PollerTask pollerTask;
+  private PollerTask pollerTask;
+  private ImageButton playPauseButton;
 
   public static ReplayControls newInstance(PollerTask pollertask) {
 
-    ReplayControls fragment = new ReplayControls();
-    fragment.pollerTask = pollertask;
+    ReplayControls replayControls = new ReplayControls();
+    replayControls.pollerTask = pollertask;
+    pollertask.setController(replayControls);
 
-    return fragment;
+    return replayControls;
   }
 
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
 
+    // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.replay_control_view, container, false);
+
     (view.findViewById(R.id.faster)).setOnClickListener(this);
     (view.findViewById(R.id.slow)).setOnClickListener(this);
-    (view.findViewById(R.id.playPause)).setOnClickListener(this);
+
+    playPauseButton = (ImageButton) view.findViewById(R.id.playPause);
+    playPauseButton.setOnClickListener(this);
 
     return view;
   }
@@ -55,12 +60,18 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
         break;
       case R.id.playPause:
         pollerTask.toggleReplayPaused();
-
-        if (pollerTask.getReplayPaused())
-          ((ImageButton) v).setImageResource(R.drawable.ic_pause_black_24dp);
-        else
-          ((ImageButton) v).setImageResource(R.drawable.ic_play_arrow_black_24dp);
+        displayPaused(pollerTask.getReplayPaused());
         break;
     }
   }
+
+  public void displayPaused(boolean b) {
+    if (b) {
+      playPauseButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+    } else {
+      playPauseButton.setImageResource(R.drawable.ic_pause_black_24dp);
+    }
+  }
+
+
 }

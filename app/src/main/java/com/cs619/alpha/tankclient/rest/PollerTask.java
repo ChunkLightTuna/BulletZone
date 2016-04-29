@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.cs619.alpha.tankclient.ReplayDatabase;
 import com.cs619.alpha.tankclient.ui.GridAdapter;
+import com.cs619.alpha.tankclient.ui.ReplayControls;
 import com.cs619.alpha.tankclient.util.GridWrapper;
 
 import org.androidannotations.annotations.Background;
@@ -38,6 +39,8 @@ public class PollerTask {
 
   private GridAdapter adapter;
   private ReplayDatabase replayDatabase;
+  private ReplayControls replayControls;
+
   private List<int[][]> replayGrid;
   private ListIterator<int[][]> griderator;
 
@@ -65,6 +68,7 @@ public class PollerTask {
   public boolean getPlayMode() {
     return live;
   }
+
   /**
    * poll server.
    */
@@ -99,12 +103,24 @@ public class PollerTask {
       onGridUpdate(griderator.next());
       SystemClock.sleep(100 / replaySpeed);
     }
+
+    if (!griderator.hasNext() && replayControls != null) {
+
+      replayPaused = true;
+
+      replayControls.getActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          replayControls.displayPaused(true);
+        }
+      });
+
+
+    }
   }
 
   public void setSpeed(int replaySpeed) {
     this.replaySpeed = replaySpeed;
-    if (replayPaused)
-      toggleReplayPaused();
   }
 
   public void toggleReplayPaused() {
@@ -150,6 +166,9 @@ public class PollerTask {
     this.replayDatabase = replayDatabase;
   }
 
+  public void setController(ReplayControls replayControls) {
+    this.replayControls = replayControls;
+  }
 
   /**
    * Stay on UI thread as to avoid blocks.

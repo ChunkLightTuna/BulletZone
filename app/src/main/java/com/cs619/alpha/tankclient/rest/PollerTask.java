@@ -107,15 +107,22 @@ public class PollerTask {
     if (!griderator.hasNext() && replayControls != null) {
 
       replayPaused = true;
+      replayControls.setPauseButtonOnUiThread(true);
+    }
+  }
 
-      replayControls.getActivity().runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          replayControls.displayPaused(true);
-        }
-      });
+  public void setReplayPosition(int i) {
+    int pos = Math.max(1, Math.min(i, 99)) * replayGrid.size() / 100;
+    Log.d(TAG, "setReplayPosition() called with: " + "i = [" + i + "] pos is" + pos + "replayGrid.size() is " + replayGrid.size());
 
+    boolean wasPaused = replayPaused;
+    if (!replayPaused)
+      replayPaused = true;
 
+    griderator = replayGrid.listIterator(pos);
+    if (!wasPaused) {
+      replayPaused = false;
+      playFromDatabase();
     }
   }
 
@@ -128,11 +135,8 @@ public class PollerTask {
     replayPaused = !replayPaused;
     if (!replayPaused)
       playFromDatabase();
-  }
 
-  public boolean getReplayPaused() {
-    Log.d(TAG, "getReplayPaused() called with: " + "");
-    return replayPaused;
+    replayControls.setPauseButtonOnUiThread(replayPaused);
   }
 
   public int getReplaySpeed() {

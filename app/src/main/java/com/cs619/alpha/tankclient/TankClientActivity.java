@@ -25,6 +25,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * Not a God Object we promise. Delegates tasks and provides the bulk of initialization.
@@ -137,7 +138,11 @@ public class TankClientActivity extends AppCompatActivity {
   public void onStop() {
     super.onStop();
     if (t.getId() != -1 && gridPollTask.getPlayMode()) {
-      restClient.leave(t.getId());
+      try {
+        restClient.leave(t.getId());
+      } catch (HttpClientErrorException e) {
+        Log.e(TAG, "onStop: ", e);
+      }
     }
 
     replayDatabase.doneWriting(true);

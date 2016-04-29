@@ -49,41 +49,45 @@ public class Settings
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
     Log.w(TAG, "onNavigationItemSelected: " + item.getTitle());
-    int id = item.getItemId();
 
-    if (id == R.id.mode_play) {
+    switch (item.getItemId()) {
 
-      ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
-          .replace(R.id.control_container, playControls).commit();
+      case R.id.mode_play:
+        ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
+            .replace(R.id.control_container, playControls).commit();
+        poller.togglePlayMode(true);
+        break;
 
-    } else if (id == R.id.mode_replay) {
+      case R.id.mode_replay:
+        ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
+            .replace(R.id.control_container, replayControls).commit();
+        poller.togglePlayMode(false);
+        break;
 
-      ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
-          .replace(R.id.control_container, replayControls).commit();
+      case R.id.game_join:
+        tank.setId(restClient.join().getResult());
+        poller.startRecording();
+        Log.d(TAG, "tankId is " + tank.getId());
+        break;
 
-      poller.togglePlayMode(false);
+      case R.id.game_leave:
+        if (tank.getId() != -1)
+          try {
+            restClient.leave(tank.getId());
+          } catch (HttpClientErrorException e) {
+            Log.e(TAG, "onNavigationItemSelected: ", e);
+          }
+        poller.stopRecording();
+        break;
 
-    } else if (id == R.id.game_join) {
-      tank.setId(restClient.join().getResult());
-      poller.startRecording();
-
-      Log.d(TAG, "tankId is " + tank.getId());
-
-    } else if (id == R.id.game_leave) {
-      if (tank.getId() != -1)
-        try {
-          restClient.leave(tank.getId());
-        } catch (HttpClientErrorException e) {
-          Log.e(TAG, "onNavigationItemSelected: ", e);
-        }
-
-      poller.stopRecording();
-    } else if (id == R.id.exit) {
-      Intent startMain = new Intent(Intent.ACTION_MAIN);
-      startMain.addCategory(Intent.CATEGORY_HOME);
-      startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      context.startActivity(startMain);
+      case R.id.exit:
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(startMain);
+        break;
     }
+
 
     DrawerLayout drawer = (DrawerLayout) ((Activity) context).getWindow().getDecorView()
         .findViewById(R.id.drawer_layout);

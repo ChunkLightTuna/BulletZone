@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 
 import com.cs619.alpha.tankclient.R;
 import com.cs619.alpha.tankclient.rest.PollerTask;
@@ -18,6 +19,7 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
   private static final String TAG = ReplayControls.class.getSimpleName();
   private PollerTask pollerTask;
   private ImageButton playPauseButton;
+  private SeekBar replaySeekBar;
 
   public static ReplayControls newInstance(PollerTask pollertask) {
 
@@ -28,6 +30,11 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     return replayControls;
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    playPauseButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +45,25 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
 
     (view.findViewById(R.id.faster)).setOnClickListener(this);
     (view.findViewById(R.id.slow)).setOnClickListener(this);
+
+    replaySeekBar = (SeekBar)(view.findViewById(R.id.seekBar));
+    replaySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+        Log.d(TAG, "onStopTrackingTouch() called with: " + "seekBar = [" + seekBar + "] with Progress" + seekBar.getProgress());
+
+        pollerTask.setReplayPosition(seekBar.getProgress());
+      }
+    });
 
     playPauseButton = (ImageButton) view.findViewById(R.id.playPause);
     playPauseButton.setOnClickListener(this);
@@ -60,18 +86,49 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
         break;
       case R.id.playPause:
         pollerTask.toggleReplayPaused();
-        displayPaused(pollerTask.getReplayPaused());
         break;
     }
   }
 
-  public void displayPaused(boolean b) {
-    if (b) {
-      playPauseButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-    } else {
-      playPauseButton.setImageResource(R.drawable.ic_pause_black_24dp);
-    }
+  public void setPauseButtonOnUiThread(boolean b) {
+    final boolean b1 = b;
+    getActivity().runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        if (b1) {
+          playPauseButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+        } else {
+          playPauseButton.setImageResource(R.drawable.ic_pause_black_24dp);
+        }
+      }
+    });
+
+
   }
+//
+//  private Runnable updateSeekBar = new Runnable() {
+//    public void run() {
+//      long totalDuration = mediaPlayer.getDuration();
+//      long currentDuration = mediaPlayer.getCurrentPosition();
+//
+//      // Displaying Total Duration time
+//      remaining.setText(""+ milliSecondsToTimer(totalDuration-currentDuration));
+//      // Displaying time completed playing
+//      elapsed.setText(""+ milliSecondsToTimer(currentDuration));
+//
+//      // Updating progress bar
+//      seekbar.setProgress((int)currentDuration);
+//
+//      // Call this thread again after 15 milliseconds => ~ 1000/60fps
+//      seekHandler.postDelayed(this, 15);
+//    }
+//  };
+
+
+
+
+
+
 
 
 }

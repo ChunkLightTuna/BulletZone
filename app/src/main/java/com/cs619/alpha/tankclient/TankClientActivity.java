@@ -15,12 +15,13 @@ import com.cs619.alpha.tankclient.controller.Settings;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 import com.cs619.alpha.tankclient.rest.PollerTask;
 import com.cs619.alpha.tankclient.ui.GridAdapter;
+import com.cs619.alpha.tankclient.ui.PlayControls;
+import com.cs619.alpha.tankclient.ui.ReplayControls;
 import com.cs619.alpha.tankclient.util.BooleanWrapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
@@ -40,6 +41,7 @@ public class TankClientActivity extends AppCompatActivity {
   @ViewById
   protected GridView gridView;
 
+
   @RestService
   BulletZoneRestClient restClient;
 
@@ -48,7 +50,8 @@ public class TankClientActivity extends AppCompatActivity {
 
   private BooleanWrapper bw;
   private Tank t;
-  private long tankId = -1;
+  public PlayControls playControls;
+  public ReplayControls replayControls;
 
   /**
    * Google android lifecycle yo.
@@ -57,30 +60,31 @@ public class TankClientActivity extends AppCompatActivity {
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);
-
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    gamepad = new Gamepad(t, restClient, this);
 
     bw = new BooleanWrapper();
-    t = new Tank(tankId);
-    Log.wtf(TAG, "t created with " + tankId);
+    t = new Tank(-1);
+
+    gamepad = new Gamepad(t, restClient, this);
 
 
-    //inflate fragment
+    playControls = PlayControls.newInstance(gamepad);
+    replayControls = ReplayControls.newInstance(gridPollTask);
+
+    Log.wtf(TAG, "t created with " + t.getId());
+
+
+    //inflate play fragment
     if (findViewById(R.id.control_container) != null) {
       if (savedInstanceState == null) {
-//        PlayControls pc = new PlayControls();
-//
-//        getSupportFragmentManager().beginTransaction().add(R.id.control_container, pc).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.control_container, playControls).commit();
 
       }
     }
-
   }
 
   /**
@@ -88,12 +92,17 @@ public class TankClientActivity extends AppCompatActivity {
    */
   @AfterViews
   protected void afterViewInjection() {
+
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    Settings ssl = new Settings(this, restClient, t);
+    Settings ssl = new Settings(this, restClient, t, playControls, replayControls);
     navigationView.setNavigationItemSelectedListener(ssl);
 
-    mGridAdapter.setTankId(tankId);
+    ReplayDatabase replayDatabase = new ReplayDatabase(this);
+
+    mGridAdapter.setTank(t);
+
     gridPollTask.setAdapter(mGridAdapter);
+    gridPollTask.setDatabase(replayDatabase);
     joinAsync();
     SystemClock.sleep(500);
 
@@ -122,68 +131,11 @@ public class TankClientActivity extends AppCompatActivity {
     }
   }
 
-  /**
-   * provides hook for gamepad move forward.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonForward})
-  public void moveForward() {
-    gamepad.moveFd();
-  }
+  @Override
+  public void onStop() {
+    super.onStop();
 
-  /**
-   * provides hook for gamepad move back.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonBackward})
-  public void moveBk() {
-    gamepad.moveBk();//(t.getId(), t.getRevDir());
-  }
 
-  /**
-   * provides hook for gamepad move left.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonLeft})
-  public void turnL() {
-    gamepad.turnL();//(t.getId(), t.getLeftDir());
-//        t.setDir(t.getLeftDir());
-  }
 
-  /**
-   * provides hook for gamepad turn right.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonRight})
-  public void turnR() {
-    gamepad.turnR();//(t.getId(), t.getRightDir());
-//        t.setDir(t.getRightDir());
-  }
-
-  /**
-   * provides hook for gamepad fire.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonFire1})
-  public void fireOne() {
-    gamepad.fire(1);
-  }
-
-  /**
-   * provides hook for gamepad fire.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonFire2})
-  public void fireTwo() {
-    gamepad.fire(2);
-  }
-
-  /**
-   * provides hook for gamepad fire.
-   * Would have attached listener from Gamepad, but was running into issueproblems.
-   */
-  @Click({R.id.buttonFire3})
-  public void fireThree() {
-    gamepad.fire(3);
   }
 }

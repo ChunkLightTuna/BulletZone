@@ -29,13 +29,13 @@ public class Settings
   private PlayControls playControls;
   private ReplayControls replayControls;
 
-  public Settings(Context context, BulletZoneRestClient restClient, Tank tank) {
+  public Settings(Context context, BulletZoneRestClient restClient, Tank tank, PlayControls playControls, ReplayControls replayControls) {
     this.context = context;
     this.restClient = restClient;
     this.tank = tank;
 
-    playControls = new PlayControls();
-    replayControls = new ReplayControls();
+    this.playControls = playControls;
+    this.replayControls = replayControls;
   }
 
   @SuppressWarnings("StatementWithEmptyBody")
@@ -58,11 +58,16 @@ public class Settings
     } else if (id == R.id.game_join) {
       tank.setId(restClient.join().getResult());
 
+
       Log.d(TAG, "tankId is " + tank.getId());
 
-//    } else if (id == R.id.game_quit) {
-//      if (tank.getId() != -1)
-//        restClient.leave(tank.getId());
+    } else if (id == R.id.game_quit) {
+      if (tank.getId() != -1)
+        try {
+          restClient.leave(tank.getId());
+        } catch (org.springframework.http.converter.HttpMessageNotReadableException e) {
+          Log.e(TAG, "onNavigationItemSelected: exception on quit", e);
+        }
 
     } else if (id == R.id.exit) {
       Intent startMain = new Intent(Intent.ACTION_MAIN);

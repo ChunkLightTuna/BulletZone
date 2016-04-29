@@ -1,6 +1,5 @@
 package com.cs619.alpha.tankclient.ui;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.cs619.alpha.tankclient.R;
+import com.cs619.alpha.tankclient.Tank;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
@@ -21,11 +21,12 @@ public class GridAdapter extends BaseAdapter {
   public static final String TAG = GridAdapter.class.getSimpleName();
 
   private final Object monitor = new Object();
+
   @SystemService
   protected LayoutInflater inflater;
   private int[][] mEntities = new int[16][16];
   private int[][] lastEntities = new int[16][16];
-  private long tankId;
+  private Tank tank;
 
   public void updateList(int[][] entities) {
     synchronized (monitor) {
@@ -37,10 +38,10 @@ public class GridAdapter extends BaseAdapter {
   /**
    * set tank id.
    *
-   * @param tankId long
+   * @param tank Tank
    */
-  public void setTankId(long tankId) {
-    this.tankId = tankId;
+  public void setTank(Tank tank) {
+    this.tank = tank;
   }
 
   /**
@@ -103,7 +104,7 @@ public class GridAdapter extends BaseAdapter {
 
       lastEntities[row][col] = val;
 
-      checkPulse(view.getContext());
+      checkPulse();
 
 //    If the value is 1TIDLIFX, then the ID of the tank is TID, it has LIF life and its direction is X.
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
@@ -122,7 +123,7 @@ public class GridAdapter extends BaseAdapter {
 
             tankId = (val / 10000) - (val / 10000000) * 1000;
 
-            if (this.tankId == tankId) {
+            if (tank.getId() == tankId) {
               up = R.drawable.tank_up_blue;
               right = R.drawable.tank_right_blue;
               down = R.drawable.tank_down_blue;
@@ -158,30 +159,19 @@ public class GridAdapter extends BaseAdapter {
   /**
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    *
-   * @param context Context
    */
-  private void checkPulse(Context context) {
+  private void checkPulse() {
     boolean christLives = false;
-    if (tankId != -1) {
+    if (tank.getId() != -1) {
       for (int[] i : mEntities) {
         for (int j : i) {
-          if (tankId == (j / 10000) - (j / 10000000) * 1000) {
+          if (tank.getId() == (j / 10000) - (j / 10000000) * 1000) {
             christLives = true;
           }
         }
       }
-
       if (!christLives) {
-//        Toast.makeText(context, "YOU DED", Toast.LENGTH_LONG).show();
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//          @Override
-//          public void run() {
-//            System.exit(0);
-//          }
-//        }, 3000);
-
-//        restClient.leave(tankId);
+        tank.setId(-1);
       }
     }
   }

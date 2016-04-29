@@ -73,8 +73,8 @@ public class PollerTask {
 
         onGridUpdate(gridWrapper.getGrid());
         Log.i(TAG, "doPoll: " + record);
-        if( record ) {
-           replayDatabase.addGrid(gridWrapper);
+        if (record) {
+          replayDatabase.addGrid(gridWrapper);
         }
       } catch (org.springframework.web.client.ResourceAccessException e) {
         Log.e(TAG, "doPoll: ", e);
@@ -116,9 +116,13 @@ public class PollerTask {
     return replaySpeed;
   }
 
-  public void startRecording(){ this.record = true; }
-  public void stopRecording(){
-    replayDatabase.doneWriting( true );
+  public void startRecording() {
+//    replayDatabase.getWritableDatabase()
+    this.record = true;
+  }
+
+  public void stopRecording() {
+    replayDatabase.doneWriting(true);
     this.record = false;
   }
 
@@ -139,6 +143,7 @@ public class PollerTask {
 
   /**
    * Stay on UI thread as to avoid blocks.
+   *
    * @param grid int[][]
    */
   @UiThread

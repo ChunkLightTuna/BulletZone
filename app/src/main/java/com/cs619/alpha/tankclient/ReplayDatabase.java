@@ -76,14 +76,14 @@ public class ReplayDatabase extends SQLiteOpenHelper {
       ContentValues values = new ContentValues();
       values.put(KEY_TIME, gw.getTimeStamp());
       values.put(KEY_GRID, serialObj);
-      if(db.isOpen()) {
+      if (db.isOpen()) {
         db.insert(TABLE_REPLAYS, // table
             null, //nullColumnHack
             values); // key/value -> keys = column names/ values = column values
 
         Log.d(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
 
-        if( doneWriting ) {
+        if (doneWriting) {
           db.close();
         }
       } else {
@@ -106,20 +106,15 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     if (cursor.moveToFirst()) {
       do {
         try {
-          Log.d(TAG, "readGrid() called with: " + "7");
           serialObj = cursor.getBlob(cursor.getColumnIndex(KEY_GRID));
-          Log.d(TAG, "readGrid() called with: " + "8");
           final ByteArrayInputStream bis = new ByteArrayInputStream(serialObj);
-          Log.d(TAG, "readGrid() called with: " + "9");
           final ObjectInputStream ois = new ObjectInputStream(bis);
-          Log.d(TAG, "readGrid() called with: " + "10");
           grid = (int[][]) ois.readObject();
-          Log.d(TAG, "readGrid() called with: " + "11");
+          Log.d(TAG, "readGrid() called with: " + grid);
         } catch (Exception e) {
           Log.e(TAG, "readGrid: ", e);
         }
         gridList.add(grid);
-        Log.d(TAG, "readGrid() called with: " + "12");
       } while (cursor.moveToNext());
     }
 
@@ -127,7 +122,7 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     return gridList;
   }
 
-  public void doneWriting( boolean b ){
+  public void doneWriting(boolean b) {
     this.doneWriting = b;
   }
 }

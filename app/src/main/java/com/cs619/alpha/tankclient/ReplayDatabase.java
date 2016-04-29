@@ -84,7 +84,7 @@ public class ReplayDatabase extends SQLiteOpenHelper {
 
         db.close();
       } else {
-        Log.w(TAG, "addGrid: db closed!" + db.toString());
+        Log.w(TAG, "addGrid: db closed!");
       }
 
     } catch (Exception e) {

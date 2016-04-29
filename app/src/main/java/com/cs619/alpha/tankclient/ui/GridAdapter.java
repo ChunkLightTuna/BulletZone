@@ -1,6 +1,5 @@
 package com.cs619.alpha.tankclient.ui;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ public class GridAdapter extends BaseAdapter {
   @SystemService
   protected LayoutInflater inflater;
   private int[][] mEntities = new int[16][16];
-  private int[][] lastEntities = new int[16][16];
   private Tank tank;
 
   public void updateList(int[][] entities) {
@@ -101,19 +99,14 @@ public class GridAdapter extends BaseAdapter {
 
     int val = mEntities[row][col];
 
-    if(val != lastEntities[row][col]) {
-
-      lastEntities[row][col] = val;
-
-      checkPulse();
+//      checkPulse();
 
 //    If the value is 1TIDLIFX, then the ID of the tank is TID, it has LIF life and its direction is X.
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
       synchronized (monitor) {
 
-
-        if(col == 2 && row == 4)
-          Log.wtf("hidden wall: ", val + "");
+//        if(col == 2 && row == 4)
+//          Log.wtf("hidden wall: ", val + "");
 
         if (val > 0) {
           if (val == 1000) {
@@ -158,7 +151,7 @@ public class GridAdapter extends BaseAdapter {
         }
 
       }
-    }
+//    }
 
     return view;
   }

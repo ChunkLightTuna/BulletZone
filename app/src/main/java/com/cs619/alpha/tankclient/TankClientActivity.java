@@ -134,7 +134,7 @@ public class TankClientActivity extends AppCompatActivity {
   @Override
   public void onStop() {
     super.onStop();
-
+    restClient.leave(t.getId());
 
 
   }

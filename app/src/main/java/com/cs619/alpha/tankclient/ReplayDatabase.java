@@ -98,7 +98,7 @@ public class ReplayDatabase extends SQLiteOpenHelper {
   public List<int[][]> readGrid() {
     List<int[][]> gridList = new LinkedList<>();
 
-    byte[] serialObj = null;
+    byte[] serialObj;
 
     String query = "SELECT  * FROM " + TABLE_REPLAYS;
 

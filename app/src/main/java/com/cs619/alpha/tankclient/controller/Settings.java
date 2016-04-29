@@ -80,7 +80,10 @@ public class Settings
     DrawerLayout drawer = (DrawerLayout) ((Activity) context).getWindow().getDecorView()
         .findViewById(R.id.drawer_layout);
 
-    drawer.closeDrawer(GravityCompat.START);
+    if (item.getItemId() != R.id.mode_play) {
+      drawer.closeDrawer(GravityCompat.START);
+    }
+
     return true;
   }
 

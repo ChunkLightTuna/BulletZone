@@ -11,6 +11,7 @@ public class Tank {
   public Tank(long id) {
     tankId = id;
     dir = 0;
+    health = 100;
   }
 
   /**
@@ -109,6 +110,6 @@ public class Tank {
     return health;
   }
 
-  ;
+  public void setHealth(int health){ this.health = health; }
 
 }

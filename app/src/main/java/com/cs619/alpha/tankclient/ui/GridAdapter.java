@@ -1,5 +1,6 @@
 package com.cs619.alpha.tankclient.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,12 +119,13 @@ public class GridAdapter extends BaseAdapter {
 
           } else if (val >= 10000000 && val <= 20000000) {
             int tankId, direction, up, right, down, left, life;
-
             direction = val % 10;
 
+            life = ( (val % 10000) - (val % 10) ) / 10;
             tankId = (val / 10000) - (val / 10000000) * 1000;
 
             if (tank.getId() == tankId) {
+              tank.setHealth( life );
               up = R.drawable.tank_up_blue;
               right = R.drawable.tank_right_blue;
               down = R.drawable.tank_down_blue;

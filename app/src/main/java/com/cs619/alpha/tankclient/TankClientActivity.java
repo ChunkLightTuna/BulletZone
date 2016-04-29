@@ -50,6 +50,8 @@ public class TankClientActivity extends AppCompatActivity {
 
   private BooleanWrapper bw;
   private Tank t;
+  private ReplayDatabase replayDatabase;
+
   public PlayControls playControls;
   public ReplayControls replayControls;
 
@@ -97,7 +99,7 @@ public class TankClientActivity extends AppCompatActivity {
     Settings ssl = new Settings(this, restClient, t, playControls, replayControls, gridPollTask);
     navigationView.setNavigationItemSelectedListener(ssl);
 
-    ReplayDatabase replayDatabase = new ReplayDatabase(this);
+    replayDatabase = new ReplayDatabase(this);
 
     mGridAdapter.setTank(t);
 
@@ -134,8 +136,10 @@ public class TankClientActivity extends AppCompatActivity {
   @Override
   public void onStop() {
     super.onStop();
-    restClient.leave(t.getId());
+    if (t.getId() != -1)
+      restClient.leave(t.getId());
 
+    replayDatabase.doneWriting(true);
 
   }
 }

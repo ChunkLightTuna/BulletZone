@@ -28,7 +28,7 @@ import java.util.ListIterator;
  */
 @EBean
 public class PollerTask {
-  private static final String TAG = "GridPollerTask";
+  private static final String TAG = "PollerTask";
 
   private boolean live;//true == live false == replay
   private boolean record = false; //Records to DB
@@ -39,7 +39,7 @@ public class PollerTask {
   private GridAdapter adapter;
   private ReplayDatabase replayDatabase;
   private List<int[][]> replayGrid;
-  private ListIterator<int[][]> gridIterator;
+  private ListIterator<int[][]> griderator;
 
   @RestService
   BulletZoneRestClient restClient;
@@ -48,7 +48,7 @@ public class PollerTask {
     live = true;
   }
 
-  public void setMode(boolean live) {
+  public void togglePlayMode(boolean live) {
 
     if (this.live != live) {
       this.live = live;
@@ -56,6 +56,7 @@ public class PollerTask {
       if (live) {
         doPoll();
       } else {
+        stopRecording();
         playFromDatabase();
       }
     }
@@ -75,7 +76,6 @@ public class PollerTask {
         if( record ) {
            replayDatabase.addGrid(gridWrapper);
         }
-        Log.v(TAG, "doPoll() called with: " + gridWrapper);
       } catch (org.springframework.web.client.ResourceAccessException e) {
         Log.e(TAG, "doPoll: ", e);
       }
@@ -86,14 +86,14 @@ public class PollerTask {
 
   @Background(id = "database_retrieval_task")
   public void playFromDatabase() {
-    if (gridIterator == null || !gridIterator.hasNext())
-      gridIterator = replayGrid.listIterator(0);
-
-    while (!replayPaused && gridIterator.hasNext()) {
-      onGridUpdate(gridIterator.next());
+    if (griderator == null || !griderator.hasNext()) {
+      replayGrid = replayDatabase.readGrid();
+      griderator = replayGrid.listIterator(0);
+    }
+    while (!replayPaused && griderator.hasNext()) {
+      onGridUpdate(griderator.next());
       SystemClock.sleep(100 / replaySpeed);
     }
-
   }
 
   public void setSpeed(int replaySpeed) {

@@ -97,30 +97,33 @@ public class ReplayDatabase extends SQLiteOpenHelper {
 
   public List<int[][]> readGrid() {
     List<int[][]> gridList = new LinkedList<>();
-
     byte[] serialObj;
-
     String query = "SELECT  * FROM " + TABLE_REPLAYS;
-
     SQLiteDatabase db = this.getWritableDatabase();
-
     Cursor cursor = db.rawQuery(query, null);
 
     int[][] grid = null;
     if (cursor.moveToFirst()) {
       do {
         try {
+          Log.d(TAG, "readGrid() called with: " + "7");
           serialObj = cursor.getBlob(cursor.getColumnIndex(KEY_GRID));
+          Log.d(TAG, "readGrid() called with: " + "8");
           final ByteArrayInputStream bis = new ByteArrayInputStream(serialObj);
+          Log.d(TAG, "readGrid() called with: " + "9");
           final ObjectInputStream ois = new ObjectInputStream(bis);
+          Log.d(TAG, "readGrid() called with: " + "10");
           grid = (int[][]) ois.readObject();
+          Log.d(TAG, "readGrid() called with: " + "11");
         } catch (Exception e) {
           Log.e(TAG, "readGrid: ", e);
         }
         gridList.add(grid);
+        Log.d(TAG, "readGrid() called with: " + "12");
       } while (cursor.moveToNext());
     }
 
+    db.close();
     return gridList;
   }
 

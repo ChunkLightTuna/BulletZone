@@ -58,7 +58,8 @@ public class Settings
 
       ((TankClientActivity) context).getSupportFragmentManager().beginTransaction()
           .replace(R.id.control_container, replayControls).commit();
-      poller.stopRecording();
+
+      poller.togglePlayMode(false);
 
     } else if (id == R.id.game_join) {
       tank.setId(restClient.join().getResult());

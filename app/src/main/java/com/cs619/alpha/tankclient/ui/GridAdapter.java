@@ -1,6 +1,6 @@
 package com.cs619.alpha.tankclient.ui;
 
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.cs619.alpha.tankclient.R;
 import com.cs619.alpha.tankclient.Tank;
+import com.cs619.alpha.tankclient.TankClientActivity;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
@@ -22,6 +23,10 @@ public class GridAdapter extends BaseAdapter {
   public static final String TAG = GridAdapter.class.getSimpleName();
 
   private final Object monitor = new Object();
+  private Context context;
+
+  private int lastTankX = -1;
+  private int lastTankY = -1;
 
   @SystemService
   protected LayoutInflater inflater;
@@ -33,6 +38,10 @@ public class GridAdapter extends BaseAdapter {
       this.mEntities = entities;
       this.notifyDataSetChanged();
     }
+  }
+
+  public void setContext(Context context) {
+    this.context = context;
   }
 
   /**
@@ -100,67 +109,70 @@ public class GridAdapter extends BaseAdapter {
 
     int val = mEntities[row][col];
 
-//      checkPulse();
+//    checkPulse();
 
 //    If the value is 1TIDLIFX, then the ID of the tank is TID, it has LIF life and its direction is X.
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
-      synchronized (monitor) {
+    synchronized (monitor) {
 
-//        if(col == 2 && row == 4)
-//          Log.wtf("hidden wall: ", val + "");
+      ((TankClientActivity) context).updateHP(tank.getHealth());
 
-        if (val > 0) {
-          if (val == 1000) {
-            ((ImageView) view).setImageResource(R.drawable.wall);
-          } else if(val == 1500) {
-            ((ImageView) view).setImageResource(R.drawable.destructable_wall);
-          } else if (val >= 2000000 && val <= 3000000) {
-            int dmg = ((val % 1000) - (val % 10 )) / 10;
-            if(dmg == 10) {
-              ((ImageView) view).setImageResource(R.drawable.bullet1);
-            }
-            else if( dmg == 30 ){
-              ((ImageView) view).setImageResource(R.drawable.bullet2);
-            }
-            else{
-              ((ImageView) view).setImageResource(R.drawable.bullet3);
-            }
-          } else if (val >= 10000000 && val <= 20000000) {
-            int tankId, direction, up, right, down, left, life;
-            direction = val % 10;
-
-            life = ( (val % 10000) - (val % 10) ) / 10;
-            tankId = (val / 10000) - (val / 10000000) * 1000;
-
-            if (tank.getId() == tankId) {
-              tank.setHealth( life );
-              up = R.drawable.tank_up_blue;
-              right = R.drawable.tank_right_blue;
-              down = R.drawable.tank_down_blue;
-              left = R.drawable.tank_left_blue;
-            } else {
-              up = R.drawable.tank_up;
-              right = R.drawable.tank_right;
-              down = R.drawable.tank_down;
-              left = R.drawable.tank_left;
-            }
-
-            if (direction == 0) {
-              ((ImageView) view).setImageResource(up);
-            } else if (direction == 2) {
-              ((ImageView) view).setImageResource(right);
-            } else if (direction == 4) {
-              ((ImageView) view).setImageResource(down);
-            } else if (direction == 6) {
-              ((ImageView) view).setImageResource(left);
-            }
-
+      if (val > 0) {
+        if (val == 1000) {
+          ((ImageView) view).setImageResource(R.drawable.wall);
+        } else if (val == 1500) {
+          ((ImageView) view).setImageResource(R.drawable.destructable_wall);
+        } else if (val >= 2000000 && val <= 3000000) {
+          int dmg = ((val % 1000) - (val % 10)) / 10;
+          if (dmg == 10) {
+            ((ImageView) view).setImageResource(R.drawable.bullet1);
+          } else if (dmg == 30) {
+//              ((ImageView) view).setImageResource(R.drawable.bullet2);
+          } else {
+//              ((ImageView) view).setImageResource(R.drawable.bullet3);
           }
-        } else {
-          ((ImageView) view).setImageDrawable(null);
-        }
+        } else if (val >= 10000000 && val <= 20000000) {
+          int tankId, direction, up, right, down, left, life;
+          direction = val % 10;
 
+          life = ((val % 10000) - (val % 10)) / 10;
+          tankId = (val / 10000) - (val / 10000000) * 1000;
+
+          if (tank.getId() == tankId) {
+            tank.setHealth(life);
+
+            lastTankX = col;
+            lastTankY = row;
+
+            ((TankClientActivity) context).updateHP(life);
+
+            up = R.drawable.tank_up_blue;
+            right = R.drawable.tank_right_blue;
+            down = R.drawable.tank_down_blue;
+            left = R.drawable.tank_left_blue;
+          } else {
+            up = R.drawable.tank_up;
+            right = R.drawable.tank_right;
+            down = R.drawable.tank_down;
+            left = R.drawable.tank_left;
+          }
+
+          if (direction == 0) {
+            ((ImageView) view).setImageResource(up);
+          } else if (direction == 2) {
+            ((ImageView) view).setImageResource(right);
+          } else if (direction == 4) {
+            ((ImageView) view).setImageResource(down);
+          } else if (direction == 6) {
+            ((ImageView) view).setImageResource(left);
+          }
+
+        }
+      } else {
+        ((ImageView) view).setImageDrawable(null);
       }
+
+    }
 //    }
 
     return view;
@@ -168,11 +180,16 @@ public class GridAdapter extends BaseAdapter {
 
   /**
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
-   *
    */
   private void checkPulse() {
     boolean christLives = false;
     if (tank.getId() != -1) {
+
+
+//      lastTankX;
+//      lastTankY;
+
+
       for (int[] i : mEntities) {
         for (int j : i) {
           if (tank.getId() == (j / 10000) - (j / 10000000) * 1000) {
@@ -182,6 +199,7 @@ public class GridAdapter extends BaseAdapter {
       }
       if (!christLives) {
         tank.setId(-1);
+        ((TankClientActivity) context).updateHP(0);
       }
     }
   }

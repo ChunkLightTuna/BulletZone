@@ -9,8 +9,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
-import com.cs619.alpha.tankclient.controller.Gamepad;
+import com.cs619.alpha.tankclient.controller.ShakeSensor;
 import com.cs619.alpha.tankclient.controller.Settings;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 import com.cs619.alpha.tankclient.rest.PollerTask;
@@ -34,7 +35,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class TankClientActivity extends AppCompatActivity {
 
   private static final String TAG = "TankClientActivity";
-  Gamepad gamepad;
+  ShakeSensor shakeSensor;
 
   @Bean
   protected GridAdapter mGridAdapter;
@@ -42,6 +43,8 @@ public class TankClientActivity extends AppCompatActivity {
   @ViewById
   protected GridView gridView;
 
+  @ViewById
+  protected ProgressBar healthBar;
 
   @RestService
   BulletZoneRestClient restClient;
@@ -68,18 +71,12 @@ public class TankClientActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-
     bw = new BooleanWrapper();
     t = new Tank(-1);
 
-    gamepad = new Gamepad(t, restClient, this);
-
-
-    playControls = PlayControls.newInstance(gamepad);
+    playControls = PlayControls.newInstance(restClient, t);
+    shakeSensor = new ShakeSensor(this, playControls);
     replayControls = ReplayControls.newInstance(gridPollTask);
-
-    Log.wtf(TAG, "t created with " + t.getId());
-
 
     //inflate play fragment
     if (findViewById(R.id.control_container) != null) {
@@ -103,6 +100,7 @@ public class TankClientActivity extends AppCompatActivity {
     replayDatabase = new ReplayDatabase(this);
 
     mGridAdapter.setTank(t);
+    mGridAdapter.setContext(this);
 
     gridPollTask.setAdapter(mGridAdapter);
     gridPollTask.setDatabase(replayDatabase);
@@ -110,6 +108,14 @@ public class TankClientActivity extends AppCompatActivity {
     SystemClock.sleep(500);
 
     gridView.setAdapter(mGridAdapter);
+  }
+
+
+  public void updateHP(int hp) {
+    if (t.getHealth() <= 0)
+      hp = 0;
+
+    healthBar.setProgress(hp);
   }
 
   /**
@@ -146,6 +152,5 @@ public class TankClientActivity extends AppCompatActivity {
     }
 
     replayDatabase.doneWriting(true);
-
   }
 }

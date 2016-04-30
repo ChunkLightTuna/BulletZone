@@ -13,7 +13,6 @@ import com.cs619.alpha.tankclient.ui.PlayControls;
  * Created by Chris Oelerich on 4/13/16.
  */
 public class ShakeSensor implements SensorEventListener {
-
   private static final String TAG = ShakeSensor.class.getSimpleName();
   private static final int SHAKE_THRESHOLD = 1200;
 

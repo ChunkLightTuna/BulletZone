@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient;
+package com.cs619.alpha.tankclient.model;
 
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
+import com.cs619.alpha.tankclient.R;
 import com.cs619.alpha.tankclient.controller.ShakeSensor;
 import com.cs619.alpha.tankclient.controller.Settings;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;

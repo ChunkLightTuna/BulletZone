@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient;
+package com.cs619.alpha.tankclient.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,35 +20,53 @@ import java.util.List;
  * Created by Glenn on 4/23/16.
  */
 public class ReplayDatabase extends SQLiteOpenHelper {
-  // If you change the database schema, you must increment the database version.
   private static final String TAG = ReplayDatabase.class.getSimpleName();
+
+  // If you change the database schema, you must increment the database version.
   public static final int DATABASE_VERSION = 1;
   public static final String DATABASE_NAME = "ReplayReader.db";
+
   private static final String TABLE_REPLAYS = "replays";
   private static final String KEY_ID = "id";
   private static final String KEY_TIME = "time";
   private static final String KEY_GRID = "grid";
+  private static final String CREATE_REPLAY_TABLE = "CREATE TABLE " + TABLE_REPLAYS + "("
+      + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TIME + " TEXT," + KEY_GRID + " TEXT" + ");";
 
   private boolean doneWriting = false;
 
   private static final String[] COLUMNS = {KEY_ID, KEY_TIME, KEY_GRID};
 
+  /**
+   * constructor.
+   *
+   * @param context Context
+   */
   public ReplayDatabase(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
 
+  /**
+   * Create the database
+   *
+   * @param db SQLiteDatabase
+   */
   public void onCreate(SQLiteDatabase db) {
     // SQL statement to create replay table
 //        String CREATE_REPLAY_TABLE = "CREATE TABLE replays ( " +
 //                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 //                "time TEXT, " +
 //                "grid)";
-    String CREATE_REPLAY_TABLE = "CREATE TABLE " + TABLE_REPLAYS + "("
-        + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TIME + " TEXT,"
-        + KEY_GRID + " TEXT" + ");";
     db.execSQL(CREATE_REPLAY_TABLE);
   }
 
+  /**
+   * boilerplate for superclass.
+   *
+   * @param db         SQLiteDatabase
+   * @param oldVersion int
+   * @param newVersion int
+   */
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     // Drop older replay table if existed
     db.execSQL("DROP TABLE IF EXISTS replays");
@@ -57,10 +75,20 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     this.onCreate(db);
   }
 
+  /**
+   * boilerplate for superclass.
+   *
+   * @param db         SQLiteDatabase
+   * @param oldVersion int
+   * @param newVersion int
+   */
   public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     onUpgrade(db, oldVersion, newVersion);
   }
 
+  /**
+   * wipe past replay.
+   */
   public void flush() {
     SQLiteDatabase db = this.getWritableDatabase();
 
@@ -71,6 +99,11 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     db.close();
   }
 
+  /**
+   * write grid to database
+   *
+   * @param gw Gridwrapper
+   */
   public void addGrid(GridWrapper gw) {
     byte[] serialObj;
 
@@ -92,10 +125,10 @@ public class ReplayDatabase extends SQLiteOpenHelper {
             null, //nullColumnHack
             values); // key/value -> keys = column names/ values = column values
 
-        Log.v(TAG, "Added " + serialObj.toString() + " to " + gw.getTimeStamp());
+        Log.v(TAG, "addGrid() called with: " + "gw.getTimeStamp() = [" + gw.getTimeStamp() + "]");
 
-        if (doneWriting) {
-          db.close();
+        if (doneWriting) {  //???????
+          db.close(); //?????????????
         }
       } else {
         Log.w(TAG, "addGrid: tried to access db, but was closed!");
@@ -106,6 +139,11 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     }
   }
 
+  /**
+   * Read out a list of grids from the database for playback.
+   *
+   * @return "List<int[][]>"
+   */
   public List<int[][]> readGrid() {
     List<int[][]> gridList = new LinkedList<>();
     byte[] serialObj;
@@ -134,6 +172,11 @@ public class ReplayDatabase extends SQLiteOpenHelper {
     return gridList;
   }
 
+  /**
+   * Yo Glenn this is fucked up lookin!
+   *
+   * @param b boolean
+   */
   public void doneWriting(boolean b) {
     this.doneWriting = b;
   }

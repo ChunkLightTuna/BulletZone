@@ -1,11 +1,10 @@
 .gradle
-/local.properties
+
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
 /build
 /captures
-app.iml
 vcs.xml
 
 # Built application files
@@ -22,10 +21,6 @@ vcs.xml
 bin/
 gen/
 out/
-
-# Gradle files
-.gradle/
-build/
 
 # Local configuration file (sdk path, etc)
 local.properties

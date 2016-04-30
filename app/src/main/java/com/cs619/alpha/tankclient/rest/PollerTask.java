@@ -7,7 +7,7 @@ package com.cs619.alpha.tankclient.rest;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.cs619.alpha.tankclient.ReplayDatabase;
+import com.cs619.alpha.tankclient.model.ReplayDatabase;
 import com.cs619.alpha.tankclient.ui.GridAdapter;
 import com.cs619.alpha.tankclient.ui.ReplayControls;
 import com.cs619.alpha.tankclient.util.GridWrapper;
@@ -22,8 +22,6 @@ import java.util.ListIterator;
 
 /**
  * Continually makes requests to server for status updates. Supplies full state, not just diffs!
- * <p/>
- * <p/>
  * this class needs to be split in two!
  */
 @EBean
@@ -133,10 +131,17 @@ public class PollerTask {
     }
   }
 
+  /**
+   *
+   * @param replaySpeed int
+   */
   public void setSpeed(int replaySpeed) {
     this.replaySpeed = Math.max(1, Math.min(replaySpeed, 4));
   }
 
+  /**
+   *
+   */
   public void toggleReplayPaused() {
     Log.d(TAG, "toggleReplayPaused() called with: " + "");
     replayPaused = !replayPaused;
@@ -146,26 +151,35 @@ public class PollerTask {
     replayControls.setPauseButtonOnUiThread(replayPaused);
   }
 
+  /**
+   *
+   * @return int
+   */
   public int getReplaySpeed() {
     Log.d(TAG, "getReplaySpeed() called with: " + "");
     return replaySpeed;
   }
 
+  /**
+   *
+   */
   public void startRecording() {
     Log.d(TAG, "startRecording() called with: " + "");
     replayDatabase.flush();
     this.record = true;
   }
 
+  /**
+   *
+   */
   public void stopRecording() {
     Log.d(TAG, "stopRecording() called with: " + "");
     replayDatabase.doneWriting(true);
     this.record = false;
   }
 
-
   /**
-   * attach adapter to grid for UI hookin.
+   * Attach grid adapter for UI hookin.
    *
    * @param adapter GridAdapter
    */
@@ -173,10 +187,20 @@ public class PollerTask {
     this.adapter = adapter;
   }
 
+  /**
+   * Attach database for reading from database.
+   *
+   * @param replayDatabase ReplayDatabase
+   */
   public void setDatabase(ReplayDatabase replayDatabase) {
     this.replayDatabase = replayDatabase;
   }
 
+  /**
+   * Attach replay controls for controlling playback.
+   *
+   * @param replayControls ReplayControls
+   */
   public void setController(ReplayControls replayControls) {
     this.replayControls = replayControls;
   }

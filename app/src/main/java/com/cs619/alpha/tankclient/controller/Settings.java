@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.Tank;
-import com.cs619.alpha.tankclient.TankClientActivity;
+import com.cs619.alpha.tankclient.model.Tank;
+import com.cs619.alpha.tankclient.model.TankClientActivity;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 import com.cs619.alpha.tankclient.rest.PollerTask;
 import com.cs619.alpha.tankclient.ui.PlayControls;
@@ -47,6 +47,7 @@ public class Settings
   /**
    * This slide out menu allows the user to toggle b/w play and replay modes as well as joining and
    * leaving the game.
+   *
    * @param item MenuItem
    * @return boolean
    */
@@ -93,7 +94,6 @@ public class Settings
         context.startActivity(startMain);
         break;
     }
-
 
     DrawerLayout drawer = (DrawerLayout) ((Activity) context).getWindow().getDecorView()
         .findViewById(R.id.drawer_layout);

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.Tank;
+import com.cs619.alpha.tankclient.model.Tank;
 import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
 import com.cs619.alpha.tankclient.util.BooleanWrapper;
 
@@ -22,7 +22,7 @@ public class PlayControls extends Fragment implements View.OnClickListener {
   private BooleanWrapper bw;
 
   /**
-   * Static fragment constructer
+   * Static fragment constructor
    * @param bulletZoneRestClient BulletZoneRestClient
    * @param tank Tank
    * @return PlayControls

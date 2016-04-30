@@ -24,7 +24,6 @@ import java.util.ListIterator;
  * Continually makes requests to server for status updates. Supplies full state, not just diffs!
  * <p/>
  * <p/>
- * <p/>
  * this class needs to be split in two!
  */
 @EBean
@@ -91,6 +90,9 @@ public class PollerTask {
     }
   }
 
+  /**
+   * replay from local database
+   */
   @Background(id = "database_retrieval_task")
   public void playFromDatabase() {
     Log.d(TAG, "playFromDatabase() called with: " + "");
@@ -111,6 +113,11 @@ public class PollerTask {
     }
   }
 
+  /**
+   * seek to position.
+   *
+   * @param i int
+   */
   public void setReplayPosition(int i) {
     int pos = Math.max(1, Math.min(i, 99)) * replayGrid.size() / 100;
     Log.d(TAG, "setReplayPosition() called with: " + "i = [" + i + "] pos is" + pos + "replayGrid.size() is " + replayGrid.size());
@@ -127,7 +134,7 @@ public class PollerTask {
   }
 
   public void setSpeed(int replaySpeed) {
-    this.replaySpeed = replaySpeed;
+    this.replaySpeed = Math.max(1, Math.min(replaySpeed, 4));
   }
 
   public void toggleReplayPaused() {

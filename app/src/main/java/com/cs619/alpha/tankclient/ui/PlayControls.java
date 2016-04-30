@@ -21,6 +21,12 @@ public class PlayControls extends Fragment implements View.OnClickListener {
   private Tank t;
   private BooleanWrapper bw;
 
+  /**
+   * Static fragment constructer
+   * @param bulletZoneRestClient BulletZoneRestClient
+   * @param tank Tank
+   * @return PlayControls
+   */
   public static PlayControls newInstance(BulletZoneRestClient bulletZoneRestClient, Tank tank) {
 
     PlayControls fragment = new PlayControls();
@@ -30,6 +36,13 @@ public class PlayControls extends Fragment implements View.OnClickListener {
     return fragment;
   }
 
+  /**
+   * Inflate fragment view
+   * @param inflater LayoutInflater
+   * @param container ViewGroup
+   * @param savedInstanceState Bundle
+   * @return View
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -48,6 +61,10 @@ public class PlayControls extends Fragment implements View.OnClickListener {
     return view;
   }
 
+  /**
+   * onClick listeners for all buttons under play control view.
+   * @param v View
+   */
   @Override
   public void onClick(View v) {
 
@@ -79,7 +96,7 @@ public class PlayControls extends Fragment implements View.OnClickListener {
   }
 
   /**
-   * fire all phasers.
+   * fire all phasers. pew pew!!
    *
    * @param i long
    */
@@ -94,9 +111,9 @@ public class PlayControls extends Fragment implements View.OnClickListener {
   }
 
   /**
-   * move t.
+   * Turn/move tank down.
    */
-  public void down() {
+  private void down() {
     if (t.getId() != -1) {
       try {
         if (t.getDir() == 4)
@@ -115,7 +132,10 @@ public class PlayControls extends Fragment implements View.OnClickListener {
     }
   }
 
-  public void up() {
+  /**
+   * Turn/move tank up.
+   */
+  private void up() {
     if (t.getId() != -1) {
       try {
         if (t.getDir() == 0)
@@ -128,7 +148,6 @@ public class PlayControls extends Fragment implements View.OnClickListener {
             t.setDir(0);
           }
         }
-        //restClient.move(t.getId(), (byte) t.getDir());
       } catch (Exception e) {
         Log.e(TAG, "move: ", e);
       }
@@ -136,9 +155,9 @@ public class PlayControls extends Fragment implements View.OnClickListener {
   }
 
   /**
-   * turn t.
+   * Turn/move tank left.
    */
-  public void left() {
+  private void left() {
     if (t.getId() != -1) {
       try {
         if (t.getDir() == 6)
@@ -157,7 +176,10 @@ public class PlayControls extends Fragment implements View.OnClickListener {
     }
   }
 
-  public void right() {
+  /**
+   * Turn/move tank right.
+   */
+  private void right() {
     if (t.getId() != -1) {
       try {
         if (t.getDir() == 2)

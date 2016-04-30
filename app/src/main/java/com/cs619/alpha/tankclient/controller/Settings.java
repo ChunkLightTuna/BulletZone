@@ -44,6 +44,12 @@ public class Settings
     this.replayControls = replayControls;
   }
 
+  /**
+   * This slide out menu allows the user to toggle b/w play and replay modes as well as joining and
+   * leaving the game.
+   * @param item MenuItem
+   * @return boolean
+   */
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {

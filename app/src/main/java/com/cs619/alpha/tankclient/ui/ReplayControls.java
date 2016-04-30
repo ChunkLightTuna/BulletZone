@@ -21,6 +21,12 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
   private ImageButton playPauseButton;
   private SeekBar replaySeekBar;
 
+  /**
+   * Static fragment constructor
+   *
+   * @param pollertask PollerTask
+   * @return ReplayControls
+   */
   public static ReplayControls newInstance(PollerTask pollertask) {
 
     ReplayControls replayControls = new ReplayControls();
@@ -30,12 +36,23 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     return replayControls;
   }
 
+  /**
+   * Make sure fragment always defaults to play arrow on view
+   */
   @Override
   public void onResume() {
     super.onResume();
     playPauseButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
   }
 
+  /**
+   * Instantiation!
+   *
+   * @param inflater           LayoutInflater
+   * @param container          ViewGroup
+   * @param savedInstanceState Bundle
+   * @return View
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -46,7 +63,7 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     (view.findViewById(R.id.faster)).setOnClickListener(this);
     (view.findViewById(R.id.slow)).setOnClickListener(this);
 
-    replaySeekBar = (SeekBar)(view.findViewById(R.id.seekBar));
+    replaySeekBar = (SeekBar) (view.findViewById(R.id.seekBar));
     replaySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
       @Override
       public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -71,6 +88,11 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     return view;
   }
 
+  /**
+   * onClick listener for all the replay buttons
+   *
+   * @param v View
+   */
   @Override
   public void onClick(View v) {
 
@@ -79,10 +101,10 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
 
     switch (v.getId()) {
       case R.id.faster:
-        pollerTask.setSpeed(Math.min(pollerTask.getReplaySpeed() + 1, 4));
+        pollerTask.setSpeed(pollerTask.getReplaySpeed() + 1);
         break;
       case R.id.slow:
-        pollerTask.setSpeed(Math.max(1, pollerTask.getReplaySpeed() - 1));
+        pollerTask.setSpeed(pollerTask.getReplaySpeed() - 1);
         break;
       case R.id.playPause:
         pollerTask.toggleReplayPaused();
@@ -90,6 +112,11 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     }
   }
 
+  /**
+   * Primarily for external non-UI tasks to toggle the appearance of the play/pause button
+   *
+   * @param b boolean
+   */
   public void setPauseButtonOnUiThread(boolean b) {
     final boolean b1 = b;
     getActivity().runOnUiThread(new Runnable() {
@@ -102,10 +129,8 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
         }
       }
     });
-
-
   }
-//
+
 //  private Runnable updateSeekBar = new Runnable() {
 //    public void run() {
 //      long totalDuration = mediaPlayer.getDuration();
@@ -123,12 +148,5 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
 //      seekHandler.postDelayed(this, 15);
 //    }
 //  };
-
-
-
-
-
-
-
 
 }

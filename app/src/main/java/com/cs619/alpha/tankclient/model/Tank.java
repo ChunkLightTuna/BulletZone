@@ -59,40 +59,6 @@ public class Tank {
   }
 
   /**
-   * get direction of tank's left side.
-   *
-   * @return int
-   */
-  public int getLeftDir() {
-    if (dir == 0) {
-      return 6;
-    } else if (dir == 2) {
-      return 0;
-    } else if (dir == 4) {
-      return 2;
-    } else {
-      return 4;
-    }
-  }
-
-  /**
-   * get direction of tank's right side.
-   *
-   * @return int
-   */
-  public int getRightDir() {
-    if (dir == 0) {
-      return 2;
-    } else if (dir == 2) {
-      return 4;
-    } else if (dir == 4) {
-      return 6;
-    } else {
-      return 0;
-    }
-  }
-
-  /**
    * set tank direction.
    *
    * @param tankDir int
@@ -102,7 +68,7 @@ public class Tank {
   }
 
   /**
-   * get tank HP.
+   * Health getter.
    *
    * @return int
    */
@@ -110,6 +76,10 @@ public class Tank {
     return health;
   }
 
+  /**
+   * Health setter.
+   * @param health int
+   */
   public void setHealth(int health){ this.health = health; }
 
 }

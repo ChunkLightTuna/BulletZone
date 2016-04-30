@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:theme="@style/AppTheme.NoActionBar"
-            android:name="com.cs619.alpha.tankclient.TankClientActivity_"
+            android:name="com.cs619.alpha.tankclient.model.TankClientActivity_"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait">

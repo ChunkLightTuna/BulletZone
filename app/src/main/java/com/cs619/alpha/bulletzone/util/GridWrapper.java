@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.util;
+package com.cs619.alpha.bulletzone.util;
 
 
 public class GridWrapper {

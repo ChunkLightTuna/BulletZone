@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.ui;
+package com.cs619.alpha.bulletzone.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
-import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.rest.PollerTask;
+import com.cs619.alpha.bulletzone.R;
+import com.cs619.alpha.bulletzone.rest.PollerTask;
 
 /**
  * Created by Chris Oelerich on 4/27/16.

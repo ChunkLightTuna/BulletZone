@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.test;
+package com.cs619.alpha.bulletzone.test;
 
 /**
  * Created by Glenn on 4/29/16.

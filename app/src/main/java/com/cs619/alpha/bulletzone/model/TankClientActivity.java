@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.model;
+package com.cs619.alpha.bulletzone.model;
 
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,15 +11,15 @@ import android.util.Log;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
-import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.controller.ShakeSensor;
-import com.cs619.alpha.tankclient.controller.Settings;
-import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
-import com.cs619.alpha.tankclient.rest.PollerTask;
-import com.cs619.alpha.tankclient.ui.GridAdapter;
-import com.cs619.alpha.tankclient.ui.PlayControls;
-import com.cs619.alpha.tankclient.ui.ReplayControls;
-import com.cs619.alpha.tankclient.util.BooleanWrapper;
+import com.cs619.alpha.bulletzone.R;
+import com.cs619.alpha.bulletzone.controller.ShakeSensor;
+import com.cs619.alpha.bulletzone.controller.Settings;
+import com.cs619.alpha.bulletzone.rest.BulletZoneRestClient;
+import com.cs619.alpha.bulletzone.rest.PollerTask;
+import com.cs619.alpha.bulletzone.view.GridAdapter;
+import com.cs619.alpha.bulletzone.view.PlayControls;
+import com.cs619.alpha.bulletzone.view.ReplayControls;
+import com.cs619.alpha.bulletzone.util.BooleanWrapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;

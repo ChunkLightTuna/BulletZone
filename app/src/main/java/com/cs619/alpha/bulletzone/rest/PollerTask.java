@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.rest;
+package com.cs619.alpha.bulletzone.rest;
 
 /**
  * Created by karenjin on 10/21/15.
@@ -7,10 +7,10 @@ package com.cs619.alpha.tankclient.rest;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.cs619.alpha.tankclient.model.ReplayDatabase;
-import com.cs619.alpha.tankclient.ui.GridAdapter;
-import com.cs619.alpha.tankclient.ui.ReplayControls;
-import com.cs619.alpha.tankclient.util.GridWrapper;
+import com.cs619.alpha.bulletzone.model.ReplayDatabase;
+import com.cs619.alpha.bulletzone.view.GridAdapter;
+import com.cs619.alpha.bulletzone.view.ReplayControls;
+import com.cs619.alpha.bulletzone.util.GridWrapper;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;

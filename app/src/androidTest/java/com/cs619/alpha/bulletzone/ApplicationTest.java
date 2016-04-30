@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient;
+package com.cs619.alpha.bulletzone;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

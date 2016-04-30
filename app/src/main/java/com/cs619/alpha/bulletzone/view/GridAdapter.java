@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.ui;
+package com.cs619.alpha.bulletzone.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.model.Tank;
-import com.cs619.alpha.tankclient.model.TankClientActivity;
+import com.cs619.alpha.bulletzone.R;
+import com.cs619.alpha.bulletzone.model.Tank;
+import com.cs619.alpha.bulletzone.model.TankClientActivity;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;

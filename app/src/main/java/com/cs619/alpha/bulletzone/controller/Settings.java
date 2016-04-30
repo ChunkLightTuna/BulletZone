@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.controller;
+package com.cs619.alpha.bulletzone.controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,13 +9,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.model.Tank;
-import com.cs619.alpha.tankclient.model.TankClientActivity;
-import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
-import com.cs619.alpha.tankclient.rest.PollerTask;
-import com.cs619.alpha.tankclient.ui.PlayControls;
-import com.cs619.alpha.tankclient.ui.ReplayControls;
+import com.cs619.alpha.bulletzone.R;
+import com.cs619.alpha.bulletzone.model.Tank;
+import com.cs619.alpha.bulletzone.model.TankClientActivity;
+import com.cs619.alpha.bulletzone.rest.BulletZoneRestClient;
+import com.cs619.alpha.bulletzone.rest.PollerTask;
+import com.cs619.alpha.bulletzone.view.PlayControls;
+import com.cs619.alpha.bulletzone.view.ReplayControls;
 
 import org.springframework.web.client.HttpClientErrorException;
 

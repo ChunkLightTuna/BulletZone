@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.model;
+package com.cs619.alpha.bulletzone.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.cs619.alpha.tankclient.util.GridWrapper;
+import com.cs619.alpha.bulletzone.util.GridWrapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

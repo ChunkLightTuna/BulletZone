@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.controller;
+package com.cs619.alpha.bulletzone.controller;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-import com.cs619.alpha.tankclient.ui.PlayControls;
+import com.cs619.alpha.bulletzone.view.PlayControls;
 
 /**
  * Created by Chris Oelerich on 4/13/16.

@@ -1,8 +1,8 @@
-package com.cs619.alpha.tankclient.rest;
+package com.cs619.alpha.bulletzone.rest;
 
-import com.cs619.alpha.tankclient.util.BooleanWrapper;
-import com.cs619.alpha.tankclient.util.GridWrapper;
-import com.cs619.alpha.tankclient.util.LongWrapper;
+import com.cs619.alpha.bulletzone.util.BooleanWrapper;
+import com.cs619.alpha.bulletzone.util.GridWrapper;
+import com.cs619.alpha.bulletzone.util.LongWrapper;
 
 import org.androidannotations.annotations.rest.Delete;
 import org.androidannotations.annotations.rest.Get;

@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.ui;
+package com.cs619.alpha.bulletzone.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cs619.alpha.tankclient.R;
-import com.cs619.alpha.tankclient.model.Tank;
-import com.cs619.alpha.tankclient.rest.BulletZoneRestClient;
-import com.cs619.alpha.tankclient.util.BooleanWrapper;
+import com.cs619.alpha.bulletzone.R;
+import com.cs619.alpha.bulletzone.model.Tank;
+import com.cs619.alpha.bulletzone.rest.BulletZoneRestClient;
+import com.cs619.alpha.bulletzone.util.BooleanWrapper;
 
 /**
  * Created by Chris Oelerich on 4/27/16.

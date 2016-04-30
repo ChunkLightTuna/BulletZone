@@ -1,4 +1,4 @@
-package com.cs619.alpha.tankclient.model;
+package com.cs619.alpha.bulletzone.model;
 
 /**
  * Created by Glenn.

@@ -8,7 +8,6 @@ import com.cs619.alpha.bulletzone.rest.PollerTask;
 public class PollerTest {
     private PollerTask p;
 
-
     /**
      * Tests certain functionality of the pollertask
      *

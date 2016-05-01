@@ -173,11 +173,11 @@ public class ReplayDatabase extends SQLiteOpenHelper {
   }
 
   /**
-   * Yo Glenn this is fucked up lookin!
+   * Boolean to control closing the db.
    *
-   * @param b boolean
+   * @param doneWriting boolean
    */
-  public void doneWriting(boolean b) {
-    this.doneWriting = b;
+  public void doneWriting(boolean doneWriting ) {
+    this.doneWriting = doneWriting;
   }
 }

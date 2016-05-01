@@ -48,6 +48,11 @@ public class PollerTask {
     live = true;
   }
 
+  /**
+   * Controls the boolean that switches between play and replay
+   *
+   * @param live boolean
+   */
   public void togglePlayMode(boolean live) {
     Log.d(TAG, "togglePlayMode() called with: " + "live = [" + live + "]");
     if (this.live != live) {
@@ -62,6 +67,11 @@ public class PollerTask {
     }
   }
 
+  /**
+   * Returns whether play mode is active or not.
+   *
+   * @return boolean
+   */
   public boolean getPlayMode() {
     return live;
   }
@@ -140,6 +150,7 @@ public class PollerTask {
   }
 
   /**
+   *Toggles Pause in replay mode
    *
    */
   public void toggleReplayPaused() {
@@ -152,6 +163,7 @@ public class PollerTask {
   }
 
   /**
+   * Returns current replay speed in replay mode
    *
    * @return int
    */
@@ -161,6 +173,7 @@ public class PollerTask {
   }
 
   /**
+   *  Starts recording grid for replay mode
    *
    */
   public void startRecording() {
@@ -170,6 +183,7 @@ public class PollerTask {
   }
 
   /**
+   * Stops recording grid for replay mode
    *
    */
   public void stopRecording() {

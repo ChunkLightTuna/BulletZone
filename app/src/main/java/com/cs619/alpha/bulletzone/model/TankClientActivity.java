@@ -112,6 +112,11 @@ public class TankClientActivity extends AppCompatActivity {
   }
 
 
+  /**
+   * Updates the Tank's current health
+   *
+   * @param hp int
+   */
   public void updateHP(int hp) {
     if (t.getHealth() <= 0)
       hp = 0;
@@ -131,6 +136,10 @@ public class TankClientActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * When the back button is pressed
+   *
+   */
   @Override
   public void onBackPressed() {
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,6 +150,10 @@ public class TankClientActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * When the app is stopped
+   *
+   */
   @Override
   public void onStop() {
     super.onStop();

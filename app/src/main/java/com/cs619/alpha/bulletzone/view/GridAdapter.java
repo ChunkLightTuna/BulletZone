@@ -33,6 +33,11 @@ public class GridAdapter extends BaseAdapter {
   private int[][] mEntities = new int[16][16];
   private Tank tank;
 
+  /**
+   * Passes the grid from pollertask
+   *
+   * @param entities
+   */
   public void updateList(int[][] entities) {
     synchronized (monitor) {
       this.mEntities = entities;
@@ -40,6 +45,11 @@ public class GridAdapter extends BaseAdapter {
     }
   }
 
+  /**
+   * Passes the context to the class
+   *
+   * @param context
+   */
   public void setContext(Context context) {
     this.context = context;
   }

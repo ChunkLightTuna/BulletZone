@@ -21,6 +21,12 @@ import org.androidannotations.annotations.SystemService;
 @EBean
 public class GridAdapter extends BaseAdapter {
   public static final String TAG = GridAdapter.class.getSimpleName();
+  public static final int WALL_ID = 1000;
+  public static final int DESTRUCTIBLE_WALL_ID = 1500;
+  public static final int BULLET_ID_LOWER_BOUND = 2000000;
+  public static final int BULLET_ID_UPPER_BOUND = 3000000;
+  public static final int TANK_ID_LOWER_BOUND = 10000000;
+  public static final int TANK_ID_UPPER_BOUND = 20000000;
 
   private final Object monitor = new Object();
   private Context context;
@@ -131,8 +137,8 @@ public class GridAdapter extends BaseAdapter {
         if (isWall(val)) {
           ((ImageView) view).setImageResource(R.drawable.wall);
 
-        } else if (isDestructableWall(val)) {
-          ((ImageView) view).setImageResource(R.drawable.destructable_wall);
+        } else if (isDestructibleWall(val)) {
+          ((ImageView) view).setImageResource(R.drawable.destructible_wall);
 
         } else if (isBullet(val)) {
           int dmg = ((val % 1000) - (val % 10)) / 10;
@@ -187,22 +193,47 @@ public class GridAdapter extends BaseAdapter {
     return view;
   }
 
+  /**
+   *
+   * @param val int
+   * @return boolean
+   */
   private boolean isWall(int val) {
-    return val == 1000;
+    return val == WALL_ID;
   }
 
-  private boolean isDestructableWall(int val) {
-    return val == 1500;
+  /**
+   *
+   * @param val int
+   * @return boolean
+   */
+  private boolean isDestructibleWall(int val) {
+    return val == DESTRUCTIBLE_WALL_ID;
   }
 
+  /**
+   *
+   * @param val int
+   * @return boolean
+   */
   private boolean isBullet(int val) {
-    return val >= 2000000 && val <= 3000000;
+    return val >= BULLET_ID_LOWER_BOUND && val <= BULLET_ID_UPPER_BOUND;
   }
 
+  /**
+   *
+   * @param val int
+   * @return boolean
+   */
   private boolean isTank(int val) {
-    return val >= 10000000 && val <= 20000000;
+    return val >= TANK_ID_LOWER_BOUND && val <= TANK_ID_UPPER_BOUND;
   }
 
+  /**
+   *
+   * @param val int
+   * @return boolean
+   */
   private int decodeTankId(int val) {
     if (val < 10000000 || val > 20000000) {
       return -1;
@@ -215,17 +246,20 @@ public class GridAdapter extends BaseAdapter {
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    */
   private void checkPulse() {
-    boolean christLives = false;
     if (tank.getHealth() != 0 && lastTankX != -1 && lastTankY != -1) {
+
+      boolean dead = true;
+
       if (tank.getId() == decodeTankId(mEntities[(lastTankX - 1) % 16][lastTankY]) ||
           tank.getId() == decodeTankId(mEntities[(lastTankX + 1) % 16][lastTankY]) ||
           tank.getId() == decodeTankId(mEntities[lastTankX][lastTankY]) ||
           tank.getId() == decodeTankId(mEntities[lastTankX][(lastTankY + 1) % 16]) ||
           tank.getId() == decodeTankId(mEntities[lastTankX][(lastTankY + 1) % 16])) {
-        christLives = true;
+        dead = false;
       }
 
-      if (!christLives) {
+      if (dead) {
+        tank.setId(-1);
         tank.setHealth(0);
         ((TankClientActivity) context).updateHP(0);
       }

@@ -42,6 +42,9 @@ public class GridAdapter extends BaseAdapter {
     synchronized (monitor) {
       this.mEntities = entities;
       this.notifyDataSetChanged();
+
+      checkPulse();
+      ((TankClientActivity) context).updateHP(tank.getHealth());
     }
   }
 
@@ -124,15 +127,14 @@ public class GridAdapter extends BaseAdapter {
 //    If the value is 1TIDLIFX, then the ID of the tank is TID, it has LIF life and its direction is X.
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
     synchronized (monitor) {
-
-      ((TankClientActivity) context).updateHP(tank.getHealth());
-
       if (val > 0) {
-        if (val == 1000) {
+        if (isWall(val)) {
           ((ImageView) view).setImageResource(R.drawable.wall);
-        } else if (val == 1500) {
+
+        } else if (isDestructableWall(val)) {
           ((ImageView) view).setImageResource(R.drawable.destructable_wall);
-        } else if (val >= 2000000 && val <= 3000000) {
+
+        } else if (isBullet(val)) {
           int dmg = ((val % 1000) - (val % 10)) / 10;
           if (dmg == 10) {
             ((ImageView) view).setImageResource(R.drawable.bullet1);
@@ -141,21 +143,19 @@ public class GridAdapter extends BaseAdapter {
           } else {
 //              ((ImageView) view).setImageResource(R.drawable.bullet3);
           }
-        } else if (val >= 10000000 && val <= 20000000) {
-          int tankId, direction, up, right, down, left, life;
+
+        } else if (isTank(val)) {
+          int direction, up, right, down, left, life;
+
           direction = val % 10;
 
           life = ((val % 10000) - (val % 10)) / 10;
-          tankId = (val / 10000) - (val / 10000000) * 1000;
 
-          if (tank.getId() == tankId) {
+          if (tank.getId() == decodeTankId(val)) {
             tank.setHealth(life);
 
             lastTankX = col;
             lastTankY = row;
-
-            ((TankClientActivity) context).updateHP(life);
-
             up = R.drawable.tank_up_blue;
             right = R.drawable.tank_right_blue;
             down = R.drawable.tank_down_blue;
@@ -176,7 +176,6 @@ public class GridAdapter extends BaseAdapter {
           } else if (direction == 6) {
             ((ImageView) view).setImageResource(left);
           }
-
         }
       } else {
         ((ImageView) view).setImageDrawable(null);
@@ -188,27 +187,46 @@ public class GridAdapter extends BaseAdapter {
     return view;
   }
 
+  private boolean isWall(int val) {
+    return val == 1000;
+  }
+
+  private boolean isDestructableWall(int val) {
+    return val == 1500;
+  }
+
+  private boolean isBullet(int val) {
+    return val >= 2000000 && val <= 3000000;
+  }
+
+  private boolean isTank(int val) {
+    return val >= 10000000 && val <= 20000000;
+  }
+
+  private int decodeTankId(int val) {
+    if (val < 10000000 || val > 20000000) {
+      return -1;
+    } else {
+      return (val / 10000) - (val / 10000000) * 1000;
+    }
+  }
+
   /**
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    */
   private void checkPulse() {
     boolean christLives = false;
-    if (tank.getId() != -1) {
-
-
-//      lastTankX;
-//      lastTankY;
-
-
-      for (int[] i : mEntities) {
-        for (int j : i) {
-          if (tank.getId() == (j / 10000) - (j / 10000000) * 1000) {
-            christLives = true;
-          }
-        }
+    if (tank.getHealth() != 0 && lastTankX != -1 && lastTankY != -1) {
+      if (tank.getId() == decodeTankId(mEntities[(lastTankX - 1) % 16][lastTankY]) ||
+          tank.getId() == decodeTankId(mEntities[(lastTankX + 1) % 16][lastTankY]) ||
+          tank.getId() == decodeTankId(mEntities[lastTankX][lastTankY]) ||
+          tank.getId() == decodeTankId(mEntities[lastTankX][(lastTankY + 1) % 16]) ||
+          tank.getId() == decodeTankId(mEntities[lastTankX][(lastTankY + 1) % 16])) {
+        christLives = true;
       }
+
       if (!christLives) {
-        tank.setId(-1);
+        tank.setHealth(0);
         ((TankClientActivity) context).updateHP(0);
       }
     }

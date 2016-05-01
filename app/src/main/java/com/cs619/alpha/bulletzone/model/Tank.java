@@ -1,9 +1,15 @@
 package com.cs619.alpha.bulletzone.model;
 
+import android.util.Log;
+
+import com.cs619.alpha.bulletzone.util.Debug;
+
 /**
  * Created by Glenn.
  */
 public class Tank {
+  private static final String TAG = "Tank";
+
   private long tankId;
   private int dir;
   private int health;
@@ -113,6 +119,7 @@ public class Tank {
    * @param lastCol int
    */
   public void setLastCol(int lastCol) {
+    Log.v(TAG, "setLastCol() called with: " + "lastCol = [" + lastCol + "] CallerClass = [" + Debug.getCallerCallerClassName() + "]");
     this.lastCol = lastCol;
   }
 
@@ -122,6 +129,8 @@ public class Tank {
    * @param lastRow int
    */
   public void setLastRow(int lastRow) {
+    Log.v(TAG, "setLastRow() called with: " + "lastRow = [" + lastRow + "] CallerClass = [" + Debug.getCallerCallerClassName() + "]");
+
     this.lastRow = lastRow;
   }
 }

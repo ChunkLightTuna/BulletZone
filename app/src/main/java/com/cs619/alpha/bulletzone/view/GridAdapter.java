@@ -35,9 +35,11 @@ public class GridAdapter extends BaseAdapter {
   public void updateList(int[][] entities) {
     synchronized (monitor) {
       this.mEntities = entities;
-      this.notifyDataSetChanged();
 
       checkPulse();
+
+      this.notifyDataSetChanged();
+
       ((TankClientActivity) context).updateHP();
     }
   }
@@ -179,40 +181,41 @@ public class GridAdapter extends BaseAdapter {
    * @return boolean
    */
   private int decodeTankId(int val) {
-    if (val < 10000000 || val > 20000000) {
-      Log.d(TAG, "decodeTankId() called with: " + "val = [" + val + "] val outa range!");
-      return -1;
-    } else {
-      int tankId = (val / 10000) - (val / 10000000) * 1000;
 
-      return tankId;
-    }
+    int tankId = (val < 10000000 || val > 20000000) ? -1 : (val / 10000) - (val / 10000000) * 1000;
+
+    Log.v(TAG, "decodeTankId() called with: " + "val = [" + val + "], computed tankId as [" + tankId + "]");
+
+    return tankId;
   }
 
   /**
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    */
   private void checkPulse() {
-    int col = tank.getLastCol();
     int row = tank.getLastRow();
+    int col = tank.getLastCol();
     long tankId = tank.getId();
 
-    Log.d(TAG, "checkPulse() called with: " + "col=[" + col + "], row=[" + row + "]");
-
-    if (tankId != -1 && col != -1 && row != -1 && tank.getHealth() != 0 && foundOne) {
+    if (tankId != -1 && row != -1 && col != -1 && tank.getHealth() != 0 && foundOne) {
       boolean dead = true;
 
-      if (tankId == decodeTankId(mEntities[(col + 15) % 16][row]) ||
-          tankId == decodeTankId(mEntities[(col + 1) % 16][row]) ||
-          tankId == decodeTankId(mEntities[col][row]) ||
-          tankId == decodeTankId(mEntities[col][(row + 15) % 16]) ||
-          tankId == decodeTankId(mEntities[col][(row + 1) % 16])) {
+      if (tankId == decodeTankId(mEntities[(row + 15) % 16][col]) ||
+          tankId == decodeTankId(mEntities[(row + 1) % 16][col]) ||
+          tankId == decodeTankId(mEntities[row][col]) ||
+          tankId == decodeTankId(mEntities[row][(col + 15) % 16]) ||
+          tankId == decodeTankId(mEntities[row][(col + 1) % 16])) {
         dead = false;
       }
 
-      Log.d(TAG, "checkPulse() called with: " + "foundOne=[" + foundOne + "], tank.getId()=[" + tankId + "] dead=[" + dead + "]");
+      Log.v(TAG, "checkPulse() called with: " +
+          "row=[" + row + "], " +
+          "col=[" + col + "], " +
+          "foundOne=[" + foundOne + "], " +
+          "tank.getId()=[" + tankId + "], " +
+          "dead=[" + dead + "]");
 
-      if (false) {// (dead) {
+      if (dead) {
         tank.setId(-1);
         tank.setLastRow(-1);
         tank.setLastCol(-1);

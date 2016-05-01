@@ -27,12 +27,13 @@ public class GridAdapter extends BaseAdapter {
   public static final int BULLET_ID_UPPER_BOUND = 3000000;
   public static final int TANK_ID_LOWER_BOUND = 10000000;
   public static final int TANK_ID_UPPER_BOUND = 20000000;
+  public static final int UP = 0;
+  public static final int RIGHT = 2;
+  public static final int DOWN = 4;
+  public static final int LEFT = 6;
 
   private final Object monitor = new Object();
   private Context context;
-
-  private int lastTankX = -1;
-  private int lastTankY = -1;
 
   @SystemService
   protected LayoutInflater inflater;
@@ -141,7 +142,8 @@ public class GridAdapter extends BaseAdapter {
           ((ImageView) view).setImageResource(R.drawable.destructible_wall);
 
         } else if (isBullet(val)) {
-          int dmg = ((val % 1000) - (val % 10)) / 10;
+          int dmg = decodeDmg(val);
+
           if (dmg == 10) {
             ((ImageView) view).setImageResource(R.drawable.bullet1);
           } else if (dmg == 30) {
@@ -160,8 +162,8 @@ public class GridAdapter extends BaseAdapter {
           if (tank.getId() == decodeTankId(val)) {
             tank.setHealth(life);
 
-            lastTankX = col;
-            lastTankY = row;
+            tank.setLastCol(col);
+            tank.setLastRow(row);
             up = R.drawable.tank_up_blue;
             right = R.drawable.tank_right_blue;
             down = R.drawable.tank_down_blue;
@@ -173,13 +175,13 @@ public class GridAdapter extends BaseAdapter {
             left = R.drawable.tank_left;
           }
 
-          if (direction == 0) {
+          if (direction == UP) {
             ((ImageView) view).setImageResource(up);
-          } else if (direction == 2) {
+          } else if (direction == RIGHT) {
             ((ImageView) view).setImageResource(right);
-          } else if (direction == 4) {
+          } else if (direction == DOWN) {
             ((ImageView) view).setImageResource(down);
-          } else if (direction == 6) {
+          } else if (direction == LEFT) {
             ((ImageView) view).setImageResource(left);
           }
         }
@@ -229,6 +231,9 @@ public class GridAdapter extends BaseAdapter {
     return val >= TANK_ID_LOWER_BOUND && val <= TANK_ID_UPPER_BOUND;
   }
 
+  private int decodeDmg(int val) {
+    return ((val % 1000) - (val % 10)) / 10;
+  }
   /**
    *
    * @param val int
@@ -246,15 +251,17 @@ public class GridAdapter extends BaseAdapter {
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    */
   private void checkPulse() {
-    if (tank.getHealth() != 0 && lastTankX != -1 && lastTankY != -1) {
+    int col = tank.getLastCol();
+    int row = tank.getLastRow();
+    if (tank.getHealth() != 0 && col != -1 && row != -1) {
 
       boolean dead = true;
 
-      if (tank.getId() == decodeTankId(mEntities[(lastTankX - 1) % 16][lastTankY]) ||
-          tank.getId() == decodeTankId(mEntities[(lastTankX + 1) % 16][lastTankY]) ||
-          tank.getId() == decodeTankId(mEntities[lastTankX][lastTankY]) ||
-          tank.getId() == decodeTankId(mEntities[lastTankX][(lastTankY + 1) % 16]) ||
-          tank.getId() == decodeTankId(mEntities[lastTankX][(lastTankY + 1) % 16])) {
+      if (tank.getId() == decodeTankId(mEntities[(col - 1) % 16][row]) ||
+          tank.getId() == decodeTankId(mEntities[(col + 1) % 16][row]) ||
+          tank.getId() == decodeTankId(mEntities[col][row]) ||
+          tank.getId() == decodeTankId(mEntities[col][(row - 1) % 16]) ||
+          tank.getId() == decodeTankId(mEntities[col][(row + 1) % 16])) {
         dead = false;
       }
 

@@ -1,6 +1,5 @@
 package com.cs619.alpha.bulletzone.test;
 
-import com.cs619.alpha.bulletzone.BuildConfig;
 import com.cs619.alpha.bulletzone.model.Tank;
 
 /**
@@ -16,7 +15,9 @@ public class TankTest {
     public void runTest(){
         long id = 878;
 
-        Tank t = new Tank(id);
+        Tank t = new Tank();
+
+        t.setId(id);
 
         assert(id == t.getId());
 

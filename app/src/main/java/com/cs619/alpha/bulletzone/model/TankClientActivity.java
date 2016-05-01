@@ -73,7 +73,7 @@ public class TankClientActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     bw = new BooleanWrapper();
-    t = new Tank(-1);
+    t = new Tank();
 
     playControls = PlayControls.newInstance(restClient, t);
     shakeSensor = new ShakeSensor(this, playControls);

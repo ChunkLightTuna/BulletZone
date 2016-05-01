@@ -1,6 +1,7 @@
 package com.cs619.alpha.bulletzone.view;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,45 +22,26 @@ import org.androidannotations.annotations.SystemService;
 @EBean
 public class GridAdapter extends BaseAdapter {
   public static final String TAG = GridAdapter.class.getSimpleName();
-  public static final int WALL_ID = 1000;
-  public static final int DESTRUCTIBLE_WALL_ID = 1500;
-  public static final int BULLET_ID_LOWER_BOUND = 2000000;
-  public static final int BULLET_ID_UPPER_BOUND = 3000000;
-  public static final int TANK_ID_LOWER_BOUND = 10000000;
-  public static final int TANK_ID_UPPER_BOUND = 20000000;
-  public static final int UP = 0;
-  public static final int RIGHT = 2;
-  public static final int DOWN = 4;
-  public static final int LEFT = 6;
 
   private final Object monitor = new Object();
   private Context context;
+  private boolean foundOne = false;
 
   @SystemService
   protected LayoutInflater inflater;
   private int[][] mEntities = new int[16][16];
   private Tank tank;
 
-  /**
-   * Passes the grid from pollertask
-   *
-   * @param entities
-   */
   public void updateList(int[][] entities) {
     synchronized (monitor) {
       this.mEntities = entities;
       this.notifyDataSetChanged();
 
       checkPulse();
-      ((TankClientActivity) context).updateHP(tank.getHealth());
+      ((TankClientActivity) context).updateHP();
     }
   }
 
-  /**
-   * Passes the context to the class
-   *
-   * @param context
-   */
   public void setContext(Context context) {
     this.context = context;
   }
@@ -135,35 +117,33 @@ public class GridAdapter extends BaseAdapter {
 //    (E.g., value = 12220071, tankId = 222, life = 007, direction = 2). Directions: {0 - UP, 2 - RIGHT, 4 - DOWN, 6 - LEFT}
     synchronized (monitor) {
       if (val > 0) {
-        if (isWall(val)) {
+        if (val == 1000) {
           ((ImageView) view).setImageResource(R.drawable.wall);
-
-        } else if (isDestructibleWall(val)) {
+        } else if (val == 1500) {
           ((ImageView) view).setImageResource(R.drawable.destructible_wall);
-
-        } else if (isBullet(val)) {
-          int dmg = decodeDmg(val);
-
+        } else if (val >= 2000000 && val <= 3000000) {
+          int dmg = ((val % 1000) - (val % 10)) / 10;
           if (dmg == 10) {
-            ((ImageView) view).setImageResource(R.drawable.bullet1);
+            ((ImageView) view).setImageResource(R.drawable.bullet_1);
           } else if (dmg == 30) {
-//              ((ImageView) view).setImageResource(R.drawable.bullet2);
+            ((ImageView) view).setImageResource(R.drawable.bullet_2);
           } else {
-//              ((ImageView) view).setImageResource(R.drawable.bullet3);
+            ((ImageView) view).setImageResource(R.drawable.bullet_3);
           }
-
-        } else if (isTank(val)) {
-          int direction, up, right, down, left, life;
-
+        } else if (val >= 10000000 && val <= 20000000) {
+          int tankId, direction, up, right, down, left, life;
           direction = val % 10;
 
           life = ((val % 10000) - (val % 10)) / 10;
+          tankId = (val / 10000) - (val / 10000000) * 1000;
 
-          if (tank.getId() == decodeTankId(val)) {
+          if (tank.getId() == tankId) {
             tank.setHealth(life);
 
             tank.setLastCol(col);
             tank.setLastRow(row);
+            foundOne = true;
+
             up = R.drawable.tank_up_blue;
             right = R.drawable.tank_right_blue;
             down = R.drawable.tank_down_blue;
@@ -175,15 +155,16 @@ public class GridAdapter extends BaseAdapter {
             left = R.drawable.tank_left;
           }
 
-          if (direction == UP) {
+          if (direction == 0) {
             ((ImageView) view).setImageResource(up);
-          } else if (direction == RIGHT) {
+          } else if (direction == 2) {
             ((ImageView) view).setImageResource(right);
-          } else if (direction == DOWN) {
+          } else if (direction == 4) {
             ((ImageView) view).setImageResource(down);
-          } else if (direction == LEFT) {
+          } else if (direction == 6) {
             ((ImageView) view).setImageResource(left);
           }
+
         }
       } else {
         ((ImageView) view).setImageDrawable(null);
@@ -196,46 +177,6 @@ public class GridAdapter extends BaseAdapter {
   }
 
   /**
-   *
-   * @param val int
-   * @return boolean
-   */
-  private boolean isWall(int val) {
-    return val == WALL_ID;
-  }
-
-  /**
-   *
-   * @param val int
-   * @return boolean
-   */
-  private boolean isDestructibleWall(int val) {
-    return val == DESTRUCTIBLE_WALL_ID;
-  }
-
-  /**
-   *
-   * @param val int
-   * @return boolean
-   */
-  private boolean isBullet(int val) {
-    return val >= BULLET_ID_LOWER_BOUND && val <= BULLET_ID_UPPER_BOUND;
-  }
-
-  /**
-   *
-   * @param val int
-   * @return boolean
-   */
-  private boolean isTank(int val) {
-    return val >= TANK_ID_LOWER_BOUND && val <= TANK_ID_UPPER_BOUND;
-  }
-
-  private int decodeDmg(int val) {
-    return ((val % 1000) - (val % 10)) / 10;
-  }
-  /**
-   *
    * @param val int
    * @return boolean
    */
@@ -251,16 +192,22 @@ public class GridAdapter extends BaseAdapter {
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    */
   private void checkPulse() {
+
+
     int col = tank.getLastCol();
     int row = tank.getLastRow();
-    if (tank.getHealth() != 0 && col != -1 && row != -1) {
 
+    Log.d(TAG, "checkPulse() called with: " + "col=[" + col + "], row=[" + row + "]");
+
+
+    if (tank.getId() != -1 && col != -1 && row != -1 && tank.getHealth() != 0 && foundOne) {
+      Log.d(TAG, "checkPulse() called with: " + "foundOne=[" + foundOne +"]");
       boolean dead = true;
 
-      if (tank.getId() == decodeTankId(mEntities[(col - 1) % 16][row]) ||
+      if (tank.getId() == decodeTankId(mEntities[(col + 15) % 16][row]) ||
           tank.getId() == decodeTankId(mEntities[(col + 1) % 16][row]) ||
           tank.getId() == decodeTankId(mEntities[col][row]) ||
-          tank.getId() == decodeTankId(mEntities[col][(row - 1) % 16]) ||
+          tank.getId() == decodeTankId(mEntities[col][(row + 15) % 16]) ||
           tank.getId() == decodeTankId(mEntities[col][(row + 1) % 16])) {
         dead = false;
       }
@@ -268,10 +215,9 @@ public class GridAdapter extends BaseAdapter {
       if (dead) {
         tank.setId(-1);
         tank.setHealth(0);
-        ((TankClientActivity) context).updateHP(0);
+        foundOne = false;
       }
     }
   }
 }
-
 

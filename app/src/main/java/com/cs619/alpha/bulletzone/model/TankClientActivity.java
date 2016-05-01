@@ -1,5 +1,6 @@
 package com.cs619.alpha.bulletzone.model;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.SystemClock;
@@ -12,14 +13,14 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 
 import com.cs619.alpha.bulletzone.R;
-import com.cs619.alpha.bulletzone.controller.ShakeSensor;
 import com.cs619.alpha.bulletzone.controller.Settings;
+import com.cs619.alpha.bulletzone.controller.ShakeSensor;
 import com.cs619.alpha.bulletzone.rest.BulletZoneRestClient;
 import com.cs619.alpha.bulletzone.rest.PollerTask;
+import com.cs619.alpha.bulletzone.util.BooleanWrapper;
 import com.cs619.alpha.bulletzone.view.GridAdapter;
 import com.cs619.alpha.bulletzone.view.PlayControls;
 import com.cs619.alpha.bulletzone.view.ReplayControls;
-import com.cs619.alpha.bulletzone.util.BooleanWrapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -115,13 +116,15 @@ public class TankClientActivity extends AppCompatActivity {
   /**
    * Updates the Tank's current health
    *
-   * @param hp int
    */
-  public void updateHP(int hp) {
-    if (t.getHealth() <= 0)
-      hp = 0;
+  public void updateHP() {
+    int hp = Math.max(0, t.getHealth());
 
     healthBar.setProgress(hp);
+    healthBar.getProgressDrawable().setColorFilter(
+        Color.rgb(Math.min(255, (100 - hp) * 255 / 50), Math.min(255, hp * 255 / 50), 0),
+        android.graphics.PorterDuff.Mode.SRC_IN);
+
   }
 
   /**

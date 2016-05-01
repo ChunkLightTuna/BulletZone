@@ -115,7 +115,6 @@ public class TankClientActivity extends AppCompatActivity {
 
   /**
    * Updates the Tank's current health
-   *
    */
   public void updateHP() {
     int hp = Math.max(0, t.getHealth());
@@ -141,7 +140,6 @@ public class TankClientActivity extends AppCompatActivity {
 
   /**
    * When the back button is pressed
-   *
    */
   @Override
   public void onBackPressed() {
@@ -155,7 +153,6 @@ public class TankClientActivity extends AppCompatActivity {
 
   /**
    * When the app is stopped
-   *
    */
   @Override
   public void onStop() {

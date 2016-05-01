@@ -142,7 +142,6 @@ public class PollerTask {
   }
 
   /**
-   *
    * @param replaySpeed int
    */
   public void setSpeed(int replaySpeed) {
@@ -150,8 +149,7 @@ public class PollerTask {
   }
 
   /**
-   *Toggles Pause in replay mode
-   *
+   * Toggles Pause in replay mode
    */
   public void toggleReplayPaused() {
     Log.d(TAG, "toggleReplayPaused() called with: " + "");
@@ -173,8 +171,7 @@ public class PollerTask {
   }
 
   /**
-   *  Starts recording grid for replay mode
-   *
+   * Starts recording grid for replay mode
    */
   public void startRecording() {
     Log.d(TAG, "startRecording() called with: " + "");
@@ -184,7 +181,6 @@ public class PollerTask {
 
   /**
    * Stops recording grid for replay mode
-   *
    */
   public void stopRecording() {
     Log.d(TAG, "stopRecording() called with: " + "");

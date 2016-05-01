@@ -177,7 +177,7 @@ public class ReplayDatabase extends SQLiteOpenHelper {
    *
    * @param doneWriting boolean
    */
-  public void doneWriting(boolean doneWriting ) {
+  public void doneWriting(boolean doneWriting) {
     this.doneWriting = doneWriting;
   }
 }

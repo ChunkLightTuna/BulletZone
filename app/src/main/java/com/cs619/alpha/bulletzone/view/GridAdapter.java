@@ -171,8 +171,6 @@ public class GridAdapter extends BaseAdapter {
       }
 
     }
-//    }
-
     return view;
   }
 
@@ -182,9 +180,12 @@ public class GridAdapter extends BaseAdapter {
    */
   private int decodeTankId(int val) {
     if (val < 10000000 || val > 20000000) {
+      Log.d(TAG, "decodeTankId() called with: " + "val = [" + val + "] val outa range!");
       return -1;
     } else {
-      return (val / 10000) - (val / 10000000) * 1000;
+      int tankId = (val / 10000) - (val / 10000000) * 1000;
+
+      return tankId;
     }
   }
 
@@ -192,32 +193,32 @@ public class GridAdapter extends BaseAdapter {
    * game deletes tank b4 life is reported at zero. need a way to check if we're still kickin
    */
   private void checkPulse() {
-
-
     int col = tank.getLastCol();
     int row = tank.getLastRow();
+    long tankId = tank.getId();
 
     Log.d(TAG, "checkPulse() called with: " + "col=[" + col + "], row=[" + row + "]");
 
-
-    if (tank.getId() != -1 && col != -1 && row != -1 && tank.getHealth() != 0 && foundOne) {
-      Log.d(TAG, "checkPulse() called with: " + "foundOne=[" + foundOne +"]");
+    if (tankId != -1 && col != -1 && row != -1 && tank.getHealth() != 0 && foundOne) {
       boolean dead = true;
 
-      if (tank.getId() == decodeTankId(mEntities[(col + 15) % 16][row]) ||
-          tank.getId() == decodeTankId(mEntities[(col + 1) % 16][row]) ||
-          tank.getId() == decodeTankId(mEntities[col][row]) ||
-          tank.getId() == decodeTankId(mEntities[col][(row + 15) % 16]) ||
-          tank.getId() == decodeTankId(mEntities[col][(row + 1) % 16])) {
+      if (tankId == decodeTankId(mEntities[(col + 15) % 16][row]) ||
+          tankId == decodeTankId(mEntities[(col + 1) % 16][row]) ||
+          tankId == decodeTankId(mEntities[col][row]) ||
+          tankId == decodeTankId(mEntities[col][(row + 15) % 16]) ||
+          tankId == decodeTankId(mEntities[col][(row + 1) % 16])) {
         dead = false;
       }
 
-      if (dead) {
+      Log.d(TAG, "checkPulse() called with: " + "foundOne=[" + foundOne + "], tank.getId()=[" + tankId + "] dead=[" + dead + "]");
+
+      if (false) {// (dead) {
         tank.setId(-1);
+        tank.setLastRow(-1);
+        tank.setLastCol(-1);
         tank.setHealth(0);
         foundOne = false;
       }
     }
   }
 }
-

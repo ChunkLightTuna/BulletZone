@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Glenn on 4/23/16.
  */
 public class ReplayDatabase extends SQLiteOpenHelper {
-  private static final String TAG = ReplayDatabase.class.getSimpleName();
+  private static final String TAG = "ReplayDatabase";
 
   // If you change the database schema, you must increment the database version.
   public static final int DATABASE_VERSION = 1;

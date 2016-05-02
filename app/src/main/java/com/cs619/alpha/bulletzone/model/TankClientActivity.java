@@ -35,8 +35,8 @@ import org.springframework.web.client.HttpClientErrorException;
  */
 @EActivity(R.layout.activity_main)
 public class TankClientActivity extends AppCompatActivity {
-
   private static final String TAG = "TankClientActivity";
+  
   ShakeSensor shakeSensor;
 
   @Bean

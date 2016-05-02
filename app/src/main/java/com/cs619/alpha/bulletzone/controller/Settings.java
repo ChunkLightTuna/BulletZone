@@ -24,8 +24,8 @@ import org.springframework.web.client.HttpClientErrorException;
  */
 public class Settings
     implements NavigationView.OnNavigationItemSelectedListener {
+  private static final String TAG = "Settings";
 
-  private final static String TAG = Settings.class.getSimpleName();
   private Context context;
   private BulletZoneRestClient restClient;
   private Tank tank;

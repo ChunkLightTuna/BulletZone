@@ -21,10 +21,12 @@ import org.androidannotations.annotations.SystemService;
  */
 @EBean
 public class GridAdapter extends BaseAdapter {
-  public static final String TAG = GridAdapter.class.getSimpleName();
+  private static final String TAG = "GridAdapter";
 
   private final Object monitor = new Object();
+
   private Context context;
+
   private boolean foundOne = false;
 
   @SystemService

@@ -103,7 +103,7 @@ public class PollerTask {
    */
   @Background(id = "database_retrieval_task")
   public void playFromDatabase() {
-    Log.d(TAG, "playFromDatabase() called with: " + "");
+    Log.d(TAG, "playFromDatabase() called");
     if (griderator == null || !griderator.hasNext()) {
       replayGrid = replayDatabase.readGrid();
       griderator = replayGrid.listIterator(0);
@@ -152,7 +152,7 @@ public class PollerTask {
    * Toggles Pause in replay mode
    */
   public void toggleReplayPaused() {
-    Log.d(TAG, "toggleReplayPaused() called with: " + "");
+    Log.d(TAG, "toggleReplayPaused() called");
     replayPaused = !replayPaused;
     if (!replayPaused)
       playFromDatabase();
@@ -166,7 +166,7 @@ public class PollerTask {
    * @return int
    */
   public int getReplaySpeed() {
-    Log.d(TAG, "getReplaySpeed() called with: " + "");
+    Log.d(TAG, "getReplaySpeed() returned: " + replaySpeed);
     return replaySpeed;
   }
 
@@ -174,7 +174,7 @@ public class PollerTask {
    * Starts recording grid for replay mode
    */
   public void startRecording() {
-    Log.d(TAG, "startRecording() called with: " + "");
+    Log.d(TAG, "startRecording() called");
     replayDatabase.flush();
     this.record = true;
   }
@@ -183,7 +183,7 @@ public class PollerTask {
    * Stops recording grid for replay mode
    */
   public void stopRecording() {
-    Log.d(TAG, "stopRecording() called with: " + "");
+    Log.d(TAG, "stopRecording() called");
     replayDatabase.doneWriting(true);
     this.record = false;
   }

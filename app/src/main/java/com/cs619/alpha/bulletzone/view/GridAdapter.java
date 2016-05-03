@@ -270,14 +270,12 @@ public class GridAdapter extends BaseAdapter {
     }
   }
 
+  /**
+   *
+   * @param hue int
+   */
   public void setHue(int hue) {
-
-    float asdf = ((float) (hue - this.hue)) / 255;
-
-    Log.d(TAG, "setHue() called with: " + "hue = [" + hue + "]" + " this.hue = [" + this.hue + "]" +
-        "float =[" + asdf + "]");
-
-    ColorFilter colorFilter = Tools.ColorFilterGenerator.adjustHue(((float) (hue - this.hue)) / 360);
+    ColorFilter colorFilter = Tools.ColorFilterGenerator.adjustHue(hue - this.hue  - 180); //input is 0-360, output is -180 to 180
     this.hue = hue;
 
     for (Drawable drawable : drawables) {

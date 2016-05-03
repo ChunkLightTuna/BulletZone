@@ -1,5 +1,7 @@
-com.cs619.karen.tankclient
-com.cs619.karen.tankclient.controller
-com.cs619.karen.tankclient.rest
-com.cs619.karen.tankclient.ui
-com.cs619.karen.tankclient.util
+com.cs619.alpha.bulletzone
+com.cs619.alpha.bulletzone.controller
+com.cs619.alpha.bulletzone.model
+com.cs619.alpha.bulletzone.rest
+com.cs619.alpha.bulletzone.test
+com.cs619.alpha.bulletzone.util
+com.cs619.alpha.bulletzone.view

@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_fast_rewind_black_24dp"/>
+            android:src="@drawable/ic_remove_black_24dp"/>
 
         <ImageButton
             android:id="@+id/playPause"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_fast_forward_black_24dp"/>
+            android:src="@drawable/ic_add_black_24dp"/>
 
     </LinearLayout>
 
@@ -39,5 +39,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1x"
+        android:layout_gravity="center"
+        android:id="@+id/replay_speed"/>
+
+    <SeekBar
+        android:id="@+id/hue"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="360"/>
 
 </LinearLayout>

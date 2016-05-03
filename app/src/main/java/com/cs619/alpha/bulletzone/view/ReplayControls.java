@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.cs619.alpha.bulletzone.R;
 import com.cs619.alpha.bulletzone.rest.PollerTask;
@@ -20,6 +21,9 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
   private PollerTask pollerTask;
   private ImageButton playPauseButton;
   private SeekBar replaySeekBar;
+  private TextView replaySpeed;
+  private SeekBar hue;
+  private GridAdapter gridAdapter;
 
   /**
    * Static fragment constructor
@@ -27,11 +31,13 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
    * @param pollertask PollerTask
    * @return ReplayControls
    */
-  public static ReplayControls newInstance(PollerTask pollertask) {
+  public static ReplayControls newInstance(PollerTask pollertask, GridAdapter gridAdapter) {
 
     ReplayControls replayControls = new ReplayControls();
     replayControls.pollerTask = pollertask;
     pollertask.setController(replayControls);
+
+    replayControls.gridAdapter = gridAdapter;
 
     return replayControls;
   }
@@ -85,6 +91,28 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     playPauseButton = (ImageButton) view.findViewById(R.id.playPause);
     playPauseButton.setOnClickListener(this);
 
+    replaySpeed = (TextView) view.findViewById(R.id.replay_speed);
+    replaySpeed.setText(pollerTask.getReplaySpeed() + "x");
+
+    hue = (SeekBar) (view.findViewById(R.id.hue));
+    hue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+        Log.d(TAG, "onStopTrackingTouch() called with: " + "seekBar = [" + seekBar + "] with Progress" + seekBar.getProgress());
+
+        gridAdapter.setHue(seekBar.getProgress());
+      }
+    });
+
     return view;
   }
 
@@ -96,15 +124,18 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
   @Override
   public void onClick(View v) {
 
-
     Log.d(TAG, "onClick() called with: " + "v = [" + v + "]");
 
     switch (v.getId()) {
       case R.id.faster:
         pollerTask.setSpeed(pollerTask.getReplaySpeed() + 1);
+
+        replaySpeed.setText(pollerTask.getReplaySpeed() + "x");
         break;
       case R.id.slow:
         pollerTask.setSpeed(pollerTask.getReplaySpeed() - 1);
+
+        replaySpeed.setText(pollerTask.getReplaySpeed() + "x");
         break;
       case R.id.playPause:
         pollerTask.toggleReplayPaused();
@@ -131,22 +162,18 @@ public class ReplayControls extends Fragment implements View.OnClickListener {
     });
   }
 
-//  private Runnable updateSeekBar = new Runnable() {
-//    public void run() {
-//      long totalDuration = mediaPlayer.getDuration();
-//      long currentDuration = mediaPlayer.getCurrentPosition();
-//
-//      // Displaying Total Duration time
-//      remaining.setText(""+ milliSecondsToTimer(totalDuration-currentDuration));
-//      // Displaying time completed playing
-//      elapsed.setText(""+ milliSecondsToTimer(currentDuration));
-//
-//      // Updating progress bar
-//      seekbar.setProgress((int)currentDuration);
-//
-//      // Call this thread again after 15 milliseconds => ~ 1000/60fps
-//      seekHandler.postDelayed(this, 15);
-//    }
-//  };
+  /**
+   * @param i int
+   */
+  public void setSeekerOnUiThread(int i) {
+    final int i1 = Math.max(1, Math.min(i, 100));
 
+    getActivity().runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        Log.v(TAG, "run() called with: " + "i=[" + i1 + "]");
+        replaySeekBar.setProgress(i1);
+      }
+    });
+  }
 }

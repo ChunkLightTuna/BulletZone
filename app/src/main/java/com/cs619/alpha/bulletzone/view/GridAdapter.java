@@ -1,6 +1,8 @@
 package com.cs619.alpha.bulletzone.view;
 
 import android.content.Context;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,13 @@ import android.widget.ImageView;
 import com.cs619.alpha.bulletzone.R;
 import com.cs619.alpha.bulletzone.model.Tank;
 import com.cs619.alpha.bulletzone.model.TankClientActivity;
+import com.cs619.alpha.bulletzone.util.Tools;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Populates UI based on gamestate.
@@ -28,6 +34,10 @@ public class GridAdapter extends BaseAdapter {
   private Context context;
 
   private boolean foundOne = false;
+  private int hue = 0;
+
+  private Drawable wall, destructibleWall, tankDown, tankLeft, tankRight, tankUp, tankDownBlue, tankLeftBlue, tankRightBlue, tankUpBLue, bulletOne, bulletTwo, bulletThree;
+  Set<Drawable> drawables;
 
   @SystemService
   protected LayoutInflater inflater;
@@ -48,6 +58,38 @@ public class GridAdapter extends BaseAdapter {
 
   public void setContext(Context context) {
     this.context = context;
+
+    drawables = new HashSet<>();
+    wall = context.getResources().getDrawable(R.drawable.wall);
+    drawables.add(wall);
+    destructibleWall = context.getResources().getDrawable(R.drawable.destructible_wall);
+    drawables.add(destructibleWall);
+
+    tankDown = context.getResources().getDrawable(R.drawable.tank_down);
+    drawables.add(tankDown);
+    tankLeft = context.getResources().getDrawable(R.drawable.tank_left);
+    drawables.add(tankLeft);
+    tankRight = context.getResources().getDrawable(R.drawable.tank_right);
+    drawables.add(tankRight);
+    tankUp = context.getResources().getDrawable(R.drawable.tank_up);
+    drawables.add(tankUp);
+
+    tankDownBlue = context.getResources().getDrawable(R.drawable.tank_down_blue);
+    drawables.add(tankDownBlue);
+    tankLeftBlue = context.getResources().getDrawable(R.drawable.tank_left_blue);
+    drawables.add(tankLeftBlue);
+
+    tankRightBlue = context.getResources().getDrawable(R.drawable.tank_right_blue);
+    drawables.add(tankRightBlue);
+    tankUpBLue = context.getResources().getDrawable(R.drawable.tank_up_blue);
+    drawables.add(tankUpBLue);
+
+    bulletOne = context.getResources().getDrawable(R.drawable.bullet_1);
+    drawables.add(bulletOne);
+    bulletTwo = context.getResources().getDrawable(R.drawable.bullet_2);
+    drawables.add(bulletTwo);
+    bulletThree = context.getResources().getDrawable(R.drawable.bullet_3);
+    drawables.add(bulletThree);
   }
 
   /**
@@ -122,20 +164,21 @@ public class GridAdapter extends BaseAdapter {
     synchronized (monitor) {
       if (val > 0) {
         if (val == 1000) {
-          ((ImageView) view).setImageResource(R.drawable.wall);
+          ((ImageView) view).setImageDrawable(wall);
         } else if (val == 1500) {
-          ((ImageView) view).setImageResource(R.drawable.destructible_wall);
+          ((ImageView) view).setImageDrawable(destructibleWall);
         } else if (val >= 2000000 && val <= 3000000) {
           int dmg = ((val % 1000) - (val % 10)) / 10;
           if (dmg == 10) {
-            ((ImageView) view).setImageResource(R.drawable.bullet_1);
+            ((ImageView) view).setImageDrawable(bulletOne);
           } else if (dmg == 30) {
-            ((ImageView) view).setImageResource(R.drawable.bullet_2);
+            ((ImageView) view).setImageDrawable(bulletTwo);
           } else {
-            ((ImageView) view).setImageResource(R.drawable.bullet_3);
+            ((ImageView) view).setImageDrawable(bulletThree);
           }
         } else if (val >= 10000000 && val <= 20000000) {
-          int tankId, direction, up, right, down, left, life;
+          int tankId, direction, life;
+          Drawable up, right, down, left;
           direction = val % 10;
 
           life = ((val % 10000) - (val % 10)) / 10;
@@ -148,25 +191,25 @@ public class GridAdapter extends BaseAdapter {
             tank.setLastRow(row);
             foundOne = true;
 
-            up = R.drawable.tank_up_blue;
-            right = R.drawable.tank_right_blue;
-            down = R.drawable.tank_down_blue;
-            left = R.drawable.tank_left_blue;
+            up = tankUpBLue;
+            right = tankRightBlue;
+            down = tankDownBlue;
+            left = tankLeftBlue;
           } else {
-            up = R.drawable.tank_up;
-            right = R.drawable.tank_right;
-            down = R.drawable.tank_down;
-            left = R.drawable.tank_left;
+            up = tankUp;
+            right = tankRight;
+            down = tankDown;
+            left = tankLeft;
           }
 
           if (direction == 0) {
-            ((ImageView) view).setImageResource(up);
+            ((ImageView) view).setImageDrawable(up);
           } else if (direction == 2) {
-            ((ImageView) view).setImageResource(right);
+            ((ImageView) view).setImageDrawable(right);
           } else if (direction == 4) {
-            ((ImageView) view).setImageResource(down);
+            ((ImageView) view).setImageDrawable(down);
           } else if (direction == 6) {
-            ((ImageView) view).setImageResource(left);
+            ((ImageView) view).setImageDrawable(left);
           }
 
         }
@@ -224,6 +267,21 @@ public class GridAdapter extends BaseAdapter {
         tank.setHealth(0);
         foundOne = false;
       }
+    }
+  }
+
+  public void setHue(int hue) {
+
+    float asdf = ((float) (hue - this.hue)) / 255;
+
+    Log.d(TAG, "setHue() called with: " + "hue = [" + hue + "]" + " this.hue = [" + this.hue + "]" +
+        "float =[" + asdf + "]");
+
+    ColorFilter colorFilter = Tools.ColorFilterGenerator.adjustHue(((float) (hue - this.hue)) / 360);
+    this.hue = hue;
+
+    for (Drawable drawable : drawables) {
+      drawable.setColorFilter(colorFilter);
     }
   }
 }

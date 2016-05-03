@@ -2,7 +2,7 @@ package com.cs619.alpha.bulletzone.model;
 
 import android.util.Log;
 
-import com.cs619.alpha.bulletzone.util.Debug;
+import com.cs619.alpha.bulletzone.util.Tools;
 
 /**
  * Created by Glenn.
@@ -119,7 +119,7 @@ public class Tank {
    * @param lastCol int
    */
   public void setLastCol(int lastCol) {
-    Log.v(TAG, "setLastCol() called with: " + "lastCol = [" + lastCol + "] CallerClass = [" + Debug.getCallerCallerClassName() + "]");
+    Log.v(TAG, "setLastCol() called with: " + "lastCol = [" + lastCol + "] CallerClass = [" + Tools.getCallerCallerClassName() + "]");
     this.lastCol = lastCol;
   }
 
@@ -129,7 +129,7 @@ public class Tank {
    * @param lastRow int
    */
   public void setLastRow(int lastRow) {
-    Log.v(TAG, "setLastRow() called with: " + "lastRow = [" + lastRow + "] CallerClass = [" + Debug.getCallerCallerClassName() + "]");
+    Log.v(TAG, "setLastRow() called with: " + "lastRow = [" + lastRow + "] CallerClass = [" + Tools.getCallerCallerClassName() + "]");
 
     this.lastRow = lastRow;
   }

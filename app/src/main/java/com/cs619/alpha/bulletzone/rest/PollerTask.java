@@ -62,6 +62,7 @@ public class PollerTask {
         doPoll();
       } else {
         stopRecording();
+        replayPaused = true;
         playFromDatabase();
       }
     }
@@ -110,6 +111,7 @@ public class PollerTask {
     }
 
     while (!replayPaused && griderator.hasNext()) {
+      replayControls.setSeekerOnUiThread(100 * griderator.nextIndex() / replayGrid.size());
       onGridUpdate(griderator.next());
       SystemClock.sleep(100 / replaySpeed);
     }

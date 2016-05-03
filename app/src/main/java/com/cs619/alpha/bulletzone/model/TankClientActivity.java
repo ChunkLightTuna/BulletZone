@@ -78,7 +78,7 @@ public class TankClientActivity extends AppCompatActivity {
 
     playControls = PlayControls.newInstance(restClient, t);
     shakeSensor = new ShakeSensor(this, playControls);
-    replayControls = ReplayControls.newInstance(gridPollTask);
+    replayControls = ReplayControls.newInstance(gridPollTask, mGridAdapter);
 
     //inflate play fragment
     if (findViewById(R.id.control_container) != null) {

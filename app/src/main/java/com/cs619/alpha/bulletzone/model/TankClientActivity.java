@@ -1,5 +1,6 @@
 package com.cs619.alpha.bulletzone.model;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -19,6 +20,7 @@ import com.cs619.alpha.bulletzone.rest.BulletZoneRestClient;
 import com.cs619.alpha.bulletzone.rest.PollerTask;
 import com.cs619.alpha.bulletzone.util.BooleanWrapper;
 import com.cs619.alpha.bulletzone.view.GridAdapter;
+import com.cs619.alpha.bulletzone.view.Instructions;
 import com.cs619.alpha.bulletzone.view.PlayControls;
 import com.cs619.alpha.bulletzone.view.ReplayControls;
 
@@ -36,8 +38,6 @@ import org.springframework.web.client.HttpClientErrorException;
 @EActivity(R.layout.activity_main)
 public class TankClientActivity extends AppCompatActivity {
   private static final String TAG = "TankClientActivity";
-  
-  ShakeSensor shakeSensor;
 
   @Bean
   protected GridAdapter mGridAdapter;
@@ -57,6 +57,8 @@ public class TankClientActivity extends AppCompatActivity {
   private BooleanWrapper bw;
   private Tank t;
   private ReplayDatabase replayDatabase;
+  private ShakeSensor shakeSensor;
+  SharedPreferences prefs;
 
   public PlayControls playControls;
   public ReplayControls replayControls;
@@ -87,7 +89,21 @@ public class TankClientActivity extends AppCompatActivity {
 
       }
     }
+
+    prefs = getSharedPreferences("com.cs619.alpha.bulletzone", MODE_PRIVATE);
   }
+
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    if (prefs.getBoolean("firstrun", true)) {
+      getSupportFragmentManager().beginTransaction().add(R.id.rootLayout, Instructions.newInstance()).addToBackStack("instructions").commit();
+      prefs.edit().putBoolean("firstrun", false).apply();
+    }
+  }
+
 
   /**
    * facilitates Android Annotations hand waving
